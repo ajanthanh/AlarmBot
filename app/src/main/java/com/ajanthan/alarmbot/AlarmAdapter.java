@@ -28,7 +28,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             convertView = inflater.inflate(R.layout.alarm_fragment, null);
         }
         // Lookup view for data population
-        TextView tvAlarmFragment = (TextView) convertView.findViewById(R.id.alarmFragment);
+        TextView tvAlarmFragment = (TextView) convertView.findViewById(R.id.alarmTimeFragment);
         TextView tvAmPmFragment = (TextView) convertView.findViewById(R.id.amPmFragment);
         TextView tvAlarmActiveDaysFragment = (TextView) convertView.findViewById(R.id.alarmActiveDaysFragment);
         Switch sActiveFragment = (Switch) convertView.findViewById(R.id.activeFragment);

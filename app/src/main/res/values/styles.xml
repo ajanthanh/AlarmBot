@@ -16,5 +16,9 @@
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">#FF4081</item>
     </style>
+    <style name="ActiveDaysBtn">
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+    </style>
 
 </resources>

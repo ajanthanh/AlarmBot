@@ -19,7 +19,7 @@ public class TabFragment1 extends Fragment {
     private ListView lvAlarms;
     private AlarmAdapter adapterAlarm;
     private ImageButton btnAddAlarm;
-    private String ALARM_DETAIL_KEY="alarm";
+    private String ALARM_DETAIL_KEY = "alarm";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,8 +29,8 @@ public class TabFragment1 extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         lvAlarms = (ListView) getView().findViewById(R.id.alarmList);
-        ArrayList<Alarm> aAlarms= new ArrayList<Alarm>();
-        adapterAlarm = new AlarmAdapter(getActivity(),aAlarms);
+        ArrayList<Alarm> aAlarms = new ArrayList<Alarm>();
+        adapterAlarm = new AlarmAdapter(getActivity(), aAlarms);
         lvAlarms.setAdapter(adapterAlarm);
         btnAddAlarm = (ImageButton) getView().findViewById(R.id.addAlarm);
 
@@ -40,26 +40,28 @@ public class TabFragment1 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void setupAlarmSelectedListener(){
+    private void setupAlarmSelectedListener() {
+        Toast.makeText(getActivity().getApplicationContext(), "alarm click listener called", Toast.LENGTH_LONG).show();
         lvAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View item, int position, long rowId) {
-//                Intent i = new Intent(TabFragment1.this, BoxOfficeDetailActivity.class);
-//                i.putExtra("1", adapterAlarm.getItem(position));
+                Toast.makeText(getActivity().getApplicationContext(), "alarm clicked", Toast.LENGTH_LONG).show();
+//                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
 //                startActivity(i);
             }
         });
     }
-    private void setupAddAlarmListener(){
-        btnAddAlarm.setOnClickListener(new View.OnClickListener() {
+
+    private void setupAddAlarmListener() {
+        btnAddAlarm.setOnClickListener(new AdapterView.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity().getApplicationContext(), "add alarm", Toast.LENGTH_LONG).show();
-                Boolean[] temp= new Boolean[7];
-                for(int i=0;i<7;i++){
-                    temp[i]=true;
+                Boolean[] temp = new Boolean[7];
+                for (int i = 0; i < 7; i++) {
+                    temp[i] = true;
                 }
-                adapterAlarm.add(new Alarm(0,0,true,temp));
+                adapterAlarm.add(new Alarm(0, 0, true, temp));
             }
         });
     }
