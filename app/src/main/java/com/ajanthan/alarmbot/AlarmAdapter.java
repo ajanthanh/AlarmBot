@@ -31,7 +31,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         TextView tvAlarmFragment = (TextView) convertView.findViewById(R.id.alarmTimeFragment);
         TextView tvAmPmFragment = (TextView) convertView.findViewById(R.id.amPmFragment);
         TextView tvAlarmActiveDaysFragment = (TextView) convertView.findViewById(R.id.alarmActiveDaysFragment);
-        Switch sActiveFragment = (Switch) convertView.findViewById(R.id.activeFragment);
+//        Switch sActiveFragment = (Switch) convertView.findViewById(R.id.activeFragment);
         // Populate the data into the template view using the data object
         if (alarm.getMinute()<10){
             tvAlarmFragment.setText(alarm.getHour()+":0"+alarm.getMinute());
@@ -40,7 +40,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             tvAlarmFragment.setText(alarm.getHour()+":"+alarm.getMinute());
         }
         tvAmPmFragment.setText(alarm.getAmPm());
-        sActiveFragment.setChecked(alarm.getState());
+//        sActiveFragment.setChecked(alarm.getState());
         tvAlarmActiveDaysFragment.setText(alarm.getActiveDaysAsString());
 
         // Return the completed view to render on screen

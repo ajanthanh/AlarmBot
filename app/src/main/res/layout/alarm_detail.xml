@@ -16,14 +16,16 @@
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +36,8 @@
                 android:id="@+id/alarmDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jan 20 2015" />
+                android:text="Jan 20 2015"
+                android:textSize="@dimen/alarm_detail_text_size"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -49,7 +52,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:text="DATE" />
+                    android:text="DATE"
+                    android:textSize="@dimen/alarm_detail_text_size"/>
 
             </RelativeLayout>
 
@@ -65,7 +69,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp">
+            android:scrollbars="none"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,7 +134,6 @@
                         android:layout_height="wrap_content"
                         android:text="S" />
 
-
                 </LinearLayout>
 
                 <RelativeLayout
@@ -141,11 +145,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/alarm_detail_text_size"
                         android:text="Repeat weekly" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:id="@+id/repeatWeekly"
+                        android:textSize="@dimen/alarm_detail_text_size"
                         android:layout_alignParentRight="true"
                         android:text="Never" />
 
@@ -156,6 +163,7 @@
                     android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -164,13 +172,18 @@
 
                         <TextView
                             android:layout_width="wrap_content"
+
+                            android:textSize="@dimen/alarm_detail_text_size"
                             android:layout_height="wrap_content"
                             android:text="Alarm Type" />
 
                         <TextView
                             android:id="@+id/alarmType"
                             android:layout_width="wrap_content"
+
                             android:layout_height="wrap_content"
+
+                            android:textSize="@dimen/alarm_detail_text_size"
                             android:layout_alignParentRight="true"
                             android:text="Never" />
 
@@ -200,12 +213,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+
+                        android:textSize="@dimen/alarm_detail_text_size"
                         android:text="tone"/>
                     <TextView
                         android:id="@+id/alarmTone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
+
+                        android:textSize="@dimen/alarm_detail_text_size"
                         android:text="Alarm Tone 1"/>
 
                 </RelativeLayout>
@@ -224,10 +241,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Snooze"
-                            android:textSize="20dp"/>
+
+                            android:textSize="@dimen/alarm_detail_header_size"
+                            />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
+                            android:textSize="@dimen/alarm_detail_text_size"
                             android:text="Snooze discriptions blah blah blah"/>
 
                     </LinearLayout>
@@ -254,10 +275,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Smart Alarm"
-                            android:textSize="20dp"/>
+
+                            android:textSize="@dimen/alarm_detail_header_size"
+                            />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+
+                            android:textSize="@dimen/alarm_detail_text_size"
                             android:text="Smart Alarm discriptions blah blah blah"/>
 
                     </LinearLayout>

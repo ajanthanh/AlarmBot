@@ -6,5 +6,7 @@
 
     <!--Alarm Details-->
 
-    <dimen name="alarm_detail_settings_margin">12dp</dimen>
+    <dimen name="alarm_detail_settings_margin">14dp</dimen>
+    <dimen name="alarm_detail_text_size">17dp</dimen>
+    <dimen name="alarm_detail_header_size">22dp</dimen>
 </resources>

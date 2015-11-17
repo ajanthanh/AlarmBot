@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,18 +24,27 @@ public class TabFragment1 extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_fragment_1, container, false);
+        View view = inflater.inflate(R.layout.tab_fragment_1, container, false);
+        lvAlarms = (ListView) view.findViewById(R.id.alarmList);
+        ArrayList<Alarm> aAlarms = new ArrayList<Alarm>();
+        adapterAlarm = new AlarmAdapter(getActivity(), aAlarms);
+        lvAlarms.setAdapter(adapterAlarm);
+        btnAddAlarm = (ImageButton) view.findViewById(R.id.addAlarm);
+        lvAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View item, int position, long rowId) {
+                Toast.makeText(getActivity().getApplicationContext(), "alarm clicked", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
+                startActivity(i);
+            }
+        });
+
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        lvAlarms = (ListView) getView().findViewById(R.id.alarmList);
-        ArrayList<Alarm> aAlarms = new ArrayList<Alarm>();
-        adapterAlarm = new AlarmAdapter(getActivity(), aAlarms);
-        lvAlarms.setAdapter(adapterAlarm);
-        btnAddAlarm = (ImageButton) getView().findViewById(R.id.addAlarm);
 
-        setupAlarmSelectedListener();
         setupAddAlarmListener();
 
         super.onViewCreated(view, savedInstanceState);
@@ -42,18 +52,11 @@ public class TabFragment1 extends Fragment {
 
     private void setupAlarmSelectedListener() {
         Toast.makeText(getActivity().getApplicationContext(), "alarm click listener called", Toast.LENGTH_LONG).show();
-        lvAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View item, int position, long rowId) {
-                Toast.makeText(getActivity().getApplicationContext(), "alarm clicked", Toast.LENGTH_LONG).show();
-//                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
-//                startActivity(i);
-            }
-        });
+
     }
 
     private void setupAddAlarmListener() {
-        btnAddAlarm.setOnClickListener(new AdapterView.OnClickListener(){
+        btnAddAlarm.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity().getApplicationContext(), "add alarm", Toast.LENGTH_LONG).show();
@@ -64,5 +67,11 @@ public class TabFragment1 extends Fragment {
                 adapterAlarm.add(new Alarm(0, 0, true, temp));
             }
         });
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+
+        super.onActivityCreated(savedInstanceState);
     }
 }
