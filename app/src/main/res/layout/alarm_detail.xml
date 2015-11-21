@@ -7,23 +7,32 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary"
-        android:elevation="6dp"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        />
+        android:id="@+id/custom_toolbar">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/save"
+            style="@style/custom_toolbar_buttons"
+            android:text="Save"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel"
+            style="@style/custom_toolbar_buttons"
+            android:text="Cancel"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/custom_toolbar"
         android:orientation="vertical"
         android:layout_margin="15dp">
 
@@ -85,40 +94,45 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDaySunday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="S" />
+                        android:textOff="S"
+                        android:textOn="S"/>
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDayMonday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="M" />
+                        android:textOff="M"
+                        android:textOn="M"/>
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDayTuesday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T" />
+                        android:textOff="T"
+                        android:textOn="T"/>
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDayWednesday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="W" />
+                        android:textOff="W"
+                        android:textOn="W"/>
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDayThursday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T" />
+                        android:textOff="T"
+                        android:textOn="T"/>
 
                     <Button
                         android:id="@+id/activeDayFriday"
@@ -136,7 +150,7 @@
 
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_marginTop="@dimen/alarm_detail_settings_margin"
                     android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
                     android:layout_width="match_parent"
@@ -144,19 +158,18 @@
 
                     <TextView
                         android:layout_width="wrap_content"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/alarm_detail_text_size"
                         android:text="Repeat weekly" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/repeatWeekly"
-                        android:textSize="@dimen/alarm_detail_text_size"
-                        android:layout_alignParentRight="true"
-                        android:text="Never" />
+                    <!--<Spinner-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/repeatWeekly"-->
+                        <!--android:layout_alignParentRight="true" />-->
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_marginTop="@dimen/alarm_detail_settings_margin"

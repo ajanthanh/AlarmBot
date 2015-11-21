@@ -52,7 +52,6 @@ public class TabFragment1 extends Fragment {
 
     private void setupAlarmSelectedListener() {
         Toast.makeText(getActivity().getApplicationContext(), "alarm click listener called", Toast.LENGTH_LONG).show();
-
     }
 
     private void setupAddAlarmListener() {
@@ -64,7 +63,9 @@ public class TabFragment1 extends Fragment {
                 for (int i = 0; i < 7; i++) {
                     temp[i] = true;
                 }
-                adapterAlarm.add(new Alarm(0, 0, true, temp));
+                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
+                startActivity(i);
+//                adapterAlarm.add(new Alarm(0, 0, true, temp));
             }
         });
     }

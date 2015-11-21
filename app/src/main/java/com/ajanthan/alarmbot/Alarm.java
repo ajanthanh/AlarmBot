@@ -1,18 +1,30 @@
 package com.ajanthan.alarmbot;
 
 import android.util.Log;
+import android.widget.Button;
+
+import java.util.ArrayList;
+
+import io.realm.RealmObject;
 
 /**
  * Created by ajanthan on 15-11-04.
  */
-public class Alarm {
+public class Alarm extends RealmObject{
     private int mHour;
     private int mMinute;
-    private Boolean[] mActiveDays;
+    private ArrayList<Boolean> mActiveDays;
     private Boolean mState;
     private String amPm;
+    private int mVolume;
+    private String mTone;
+    private Boolean mSmartAlarm;
+    private Boolean mSnooze;
+    private String mAlarmType;
+    private Boolean mRepeatWeekly;
 
-    public Alarm(int hour, int minute, boolean state, Boolean[] activeDays) {
+    public Alarm(int hour, int minute, ArrayList<Boolean> activeDays, Boolean repeatWeekly, String alarmType,
+                 int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
         if (hour == 0) {
             mHour = 12;
             amPm = "AM";
@@ -24,9 +36,15 @@ public class Alarm {
             amPm = "PM";
         }
         mMinute = minute;
-        mState = state;
         mActiveDays = activeDays;
-        Log.e("testing", activeDays.toString());
+        mRepeatWeekly = repeatWeekly;
+        mAlarmType = alarmType;
+        mVolume = volume;                 //TODO: implement volume
+        mTone = tone;
+        mSnooze = snooze;
+        mSmartAlarm = smartAlarm;
+        mState = state;
+
     }
 
     public int getHour() {
@@ -37,7 +55,7 @@ public class Alarm {
         return mState;
     }
 
-    public Boolean[] getmActiveDays() {
+    public ArrayList<Boolean> getmActiveDays() {
         return mActiveDays;
     }
 
@@ -49,20 +67,48 @@ public class Alarm {
         return amPm;
     }
 
-    public String getActiveDaysAsString(){
-        String day="";
-        Log.e("stacraft",mActiveDays.length+"");
-        for(int j=0;j<mActiveDays.length;j++){
-            Log.e("stacraft",j+"");
-            if(mActiveDays[j]){
-                day+=getDay(j)+" ";
+    public String getActiveDaysAsString() {
+        String day = "";
+        Log.e("stacraft", mActiveDays.size() + "");
+        for (int j = 0; j < mActiveDays.size(); j++) {
+            Log.e("stacraft", j + "");
+            if (mActiveDays.get(j)) {
+                day += getDay(j) + " ";
             }
         }
         return day;
     }
 
-    private String getDay(int i){
-        switch (i){
+    public int getmVolume() {
+        return mVolume;
+    }
+
+    public String getmTone() {
+        return mTone;
+    }
+
+    public void setmTone(String mTone) {
+        this.mTone = mTone;
+    }
+
+    public Boolean getmSmartAlarm() {
+        return mSmartAlarm;
+    }
+
+    public Boolean getmSnooze() {
+        return mSnooze;
+    }
+
+    public String getmAlarmType() {
+        return mAlarmType;
+    }
+
+    public Boolean getmRepeatWeekly() {
+        return mRepeatWeekly;
+    }
+
+    private String getDay(int i) {
+        switch (i) {
             case 0:
                 return "SUN";
             case 1:
