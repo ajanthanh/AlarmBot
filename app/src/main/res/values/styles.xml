@@ -33,4 +33,20 @@
         <item name="android:textColor">#FFF</item>
     </style>
 
+
+    <style name="customSpinner" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/alarm_detail_text_size</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:gravity">right</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    android:textSize="@dimen/alarm_detail_text_size"
+    android:layout_gravity="right"
+    android:gravity="right"
+    android:entries="@array/repeat_weekly_options"
+    android:background="@null"
+    style="@android:style/Theme.Holo.Light.DarkActionBar"
+
 </resources>

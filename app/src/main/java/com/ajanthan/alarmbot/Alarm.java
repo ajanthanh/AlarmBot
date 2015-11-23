@@ -5,12 +5,12 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-import io.realm.RealmObject;
+//import io.realm.RealmObject;
 
 /**
  * Created by ajanthan on 15-11-04.
  */
-public class Alarm extends RealmObject{
+public class Alarm {
     private int mHour;
     private int mMinute;
     private ArrayList<Boolean> mActiveDays;

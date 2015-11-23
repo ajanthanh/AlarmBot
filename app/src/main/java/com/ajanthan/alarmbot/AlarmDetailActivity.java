@@ -1,25 +1,34 @@
 package com.ajanthan.alarmbot;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 /**
- * Created by ajanthanP on 15-11-10.
+ * Created by ajanthan on 15-11-10.
  */
-public class AlarmDetailActivity extends AppCompatActivity {
+public class AlarmDetailActivity extends Activity {
     private Button bSave;
     private Button bCancel;
+
+    private LinearLayout lRepeatWeeklyFragment;
+    private LinearLayout lAlarmTypeFragment;
+    private LinearLayout lvolumeFragment;
     private TextView tvAlarmDate;
-    private TextView tvRepeatWeekly;
-    private TextView tvAlarmType;
+    private Spinner tvRepeatWeekly;
+    private Spinner tvAlarmType;
     private TextView tvTone;
     private SeekBar sVolume;
     private Switch sSnooze;
@@ -30,11 +39,17 @@ public class AlarmDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_detail);
+
         bSave = (Button) findViewById(R.id.save);
         bCancel = (Button) findViewById(R.id.cancel);
+
+        lRepeatWeeklyFragment = (LinearLayout) findViewById(R.id.repeatWeeklyFragment);
+        lAlarmTypeFragment = (LinearLayout) findViewById(R.id.alarmTypeFragment);
+        lvolumeFragment = (LinearLayout) findViewById(R.id.volumeFragment);
+
         tvAlarmDate = (TextView) findViewById(R.id.alarmDate);
-        tvRepeatWeekly = (TextView) findViewById(R.id.repeatWeekly);
-        tvAlarmType = (TextView) findViewById(R.id.alarmType);
+        tvRepeatWeekly = (Spinner) findViewById(R.id.repeatWeekly);
+        tvAlarmType = (Spinner) findViewById(R.id.alarmType);
         tvTone = (TextView) findViewById(R.id.alarmTone);
         sVolume = (SeekBar) findViewById(R.id.volume);
         sSnooze = (Switch) findViewById(R.id.snooze);
@@ -48,14 +63,50 @@ public class AlarmDetailActivity extends AppCompatActivity {
         bActiveDays.add((Button) findViewById(R.id.activeDayFriday));
         bActiveDays.add((Button) findViewById(R.id.activeDaySaturday));
 
+        setCustomToolBarListeners();
+        setFeildOnClickListener();
 
-        tvRepeatWeekly.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void setFeildOnClickListener() {
+        lRepeatWeeklyFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                tvRepeatWeekly.performClick();
             }
         });
 
+        lAlarmTypeFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvAlarmType.performClick();
+            }
+        });
+
+        tvAlarmType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (tvAlarmType.getSelectedItemPosition() == 1) {
+                    lvolumeFragment.setVisibility(View.INVISIBLE);
+                } else {
+                    lvolumeFragment.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                tvAlarmType.setSelection(0);
+            }
+
+        });
+
+        tvTone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AlarmDetailActivity.this, AlarmToneActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void setCustomToolBarListeners() {
@@ -85,9 +136,9 @@ public class AlarmDetailActivity extends AppCompatActivity {
     }
 
     private Boolean getRepeatWeekly() {
-        if (tvRepeatWeekly.getText().equals("never")) {
+        if (tvRepeatWeekly.getSelectedItem().equals("never")) {
             return false;
-        } else if (tvRepeatWeekly.getText().equals("always")) {
+        } else if (tvRepeatWeekly.getSelectedItem().equals("always")) {
             return true;
         } else {
             return false;
@@ -95,7 +146,7 @@ public class AlarmDetailActivity extends AppCompatActivity {
     }
 
     private String getAlarmType() {
-        return tvAlarmType.getText().toString();
+        return tvAlarmType.getSelectedItem().toString();
     }
 
     private int getVolume() {

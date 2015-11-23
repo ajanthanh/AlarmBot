@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Details Alarm-->
+
+    <string-array name="repeat_weekly_options">
+        <item>Never</item>
+        <item>Always</item>
+    </string-array>
+
+    <string-array name="alarm_type_options">
+        <item>Sound</item>
+        <item>Vibrate</item>
+        <item>Sound and Vibrate</item>
+    </string-array>
+</resources>

@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?android:attr/actionBarSize"
         android:id="@+id/custom_toolbar">
 
         <Button
@@ -151,62 +151,67 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/alarm_detail_settings_margin"
-                    android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
+                    android:paddingTop="@dimen/alarm_detail_settings_margin"
+                    android:paddingBottom="@dimen/alarm_detail_settings_margin"
+                    android:id="@+id/repeatWeeklyFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/alarm_detail_text_size"
                         android:text="Repeat weekly" />
 
-                    <!--<Spinner-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/repeatWeekly"-->
-                        <!--android:layout_alignParentRight="true" />-->
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/repeatWeekly"
+                        android:entries="@array/repeat_weekly_options"
+                        style="@style/customSpinner"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/alarm_detail_settings_margin"
-                    android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
+                    android:paddingTop="@dimen/alarm_detail_settings_margin"
+                    android:paddingBottom="@dimen/alarm_detail_settings_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
                     android:orientation="vertical">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:id="@+id/alarmTypeFragment">
 
                         <TextView
                             android:layout_width="wrap_content"
 
                             android:textSize="@dimen/alarm_detail_text_size"
+                            android:layout_weight="1"
                             android:layout_height="wrap_content"
                             android:text="Alarm Type" />
 
-                        <TextView
-                            android:id="@+id/alarmType"
+                        <Spinner
                             android:layout_width="wrap_content"
-
                             android:layout_height="wrap_content"
+                            android:id="@+id/alarmType"
+                            android:entries="@array/alarm_type_options"
+                            style="@style/customSpinner"
+                            />
 
-                            android:textSize="@dimen/alarm_detail_text_size"
-                            android:layout_alignParentRight="true"
-                            android:text="Never" />
 
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginTop="@dimen/alarm_detail_settings_margin"
-                        android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
+                        android:paddingTop="@dimen/alarm_detail_settings_margin"
+                        android:paddingBottom="@dimen/alarm_detail_settings_margin"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:id="@+id/volumeFragment">
 
                         <SeekBar
                             android:id="@+id/volume"
@@ -219,8 +224,8 @@
                 </LinearLayout>
 
                 <RelativeLayout
-                    android:layout_marginTop="@dimen/alarm_detail_settings_margin"
-                    android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
+                    android:paddingTop="@dimen/alarm_detail_settings_margin"
+                    android:paddingBottom="@dimen/alarm_detail_settings_margin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
@@ -228,7 +233,7 @@
                         android:layout_height="wrap_content"
 
                         android:textSize="@dimen/alarm_detail_text_size"
-                        android:text="tone"/>
+                        android:text="Tone"/>
                     <TextView
                         android:id="@+id/alarmTone"
                         android:layout_width="wrap_content"
@@ -241,8 +246,8 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:layout_marginTop="@dimen/alarm_detail_settings_margin"
-                    android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
+                    android:paddingTop="@dimen/alarm_detail_settings_margin"
+                    android:paddingBottom="@dimen/alarm_detail_settings_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -275,8 +280,8 @@
 
 
                 <RelativeLayout
-                    android:layout_marginTop="@dimen/alarm_detail_settings_margin"
-                    android:layout_marginBottom="@dimen/alarm_detail_settings_margin"
+                    android:paddingTop="@dimen/alarm_detail_settings_margin"
+                    android:paddingBottom="@dimen/alarm_detail_settings_margin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
