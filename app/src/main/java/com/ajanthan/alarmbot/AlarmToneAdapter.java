@@ -29,7 +29,7 @@ public class AlarmToneAdapter extends ArrayAdapter<AlarmTone> {
         }
         // Lookup view for data population
         TextView tvAlarmToneName = (TextView) convertView.findViewById(R.id.alarmToneName);
-        TextView rAlarmToneActive = (RadioButton) convertView.findViewById(R.id.alarmToneActive);
+//        TextView rAlarmToneActive = (RadioButton) convertView.findViewById(R.id.alarmToneActive);
 
         tvAlarmToneName.setText(alarmTone.getName());
         // Return the completed view to render on screen
