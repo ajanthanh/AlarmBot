@@ -4,6 +4,8 @@ import android.util.Log;
 import android.widget.Button;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 //import io.realm.RealmObject;
 
@@ -22,6 +24,21 @@ public class Alarm {
     private Boolean mSnooze;
     private String mAlarmType;
     private Boolean mRepeatWeekly;
+
+    public Alarm(){
+        mHour = 12;
+        amPm = "PM";
+        mState=false;
+        mMinute = 0;
+        mActiveDays= new ArrayList<Boolean>(7);
+        Collections.fill(mActiveDays,Boolean.FALSE);
+        mRepeatWeekly = false;
+        mAlarmType = "Default";
+        mVolume = 1;                 //TODO: implement volume
+        mTone = "Default";
+        mSnooze = false;
+        mSmartAlarm = false;
+    }
 
     public Alarm(int hour, int minute, ArrayList<Boolean> activeDays, Boolean repeatWeekly, String alarmType,
                  int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
@@ -87,10 +104,6 @@ public class Alarm {
         return mTone;
     }
 
-    public void setmTone(String mTone) {
-        this.mTone = mTone;
-    }
-
     public Boolean getmSmartAlarm() {
         return mSmartAlarm;
     }
@@ -125,5 +138,9 @@ public class Alarm {
                 return "SAT";
         }
         return "";
+    }
+
+    public void setState(Boolean mState) {
+        this.mState = mState;
     }
 }

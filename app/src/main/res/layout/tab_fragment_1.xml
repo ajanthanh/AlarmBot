@@ -4,18 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/alarmList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
     <ImageButton
+        android:id="@+id/addAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/addAlarm"
-        android:src="@drawable/roundaddround"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:background="@null" />
+        android:background="@null"
+        android:src="@drawable/roundaddround" />
 
 </RelativeLayout>

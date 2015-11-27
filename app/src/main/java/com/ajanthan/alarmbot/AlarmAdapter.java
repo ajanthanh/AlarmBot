@@ -1,49 +1,98 @@
 package com.ajanthan.alarmbot;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 /**
- * Created by ajanthan on 15-11-04.
+ * Created by ajanthan on 15-11-26.
  */
-public class AlarmAdapter extends ArrayAdapter<Alarm> {
-    public AlarmAdapter(Context context, ArrayList<Alarm> aAlarm) {
-        super(context,0, aAlarm);
-    }
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        Alarm alarm = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.alarm_fragment, null);
+public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder> {
+
+    private LayoutInflater mInflate;
+    private ArrayList<Alarm> mAlarms;
+    private Context mContext;
+
+
+    public AlarmAdapter(Context context, ArrayList<Alarm> alarms){
+        mInflate = LayoutInflater.from(context);
+        if (alarms ==null){
+            mAlarms= new ArrayList<Alarm>();
+            mAlarms.add(new Alarm());
+        }else{
+            mAlarms=alarms;
         }
-        // Lookup view for data population
-        TextView tvAlarmFragment = (TextView) convertView.findViewById(R.id.alarmTimeFragment);
-        TextView tvAmPmFragment = (TextView) convertView.findViewById(R.id.amPmFragment);
-        TextView tvAlarmActiveDaysFragment = (TextView) convertView.findViewById(R.id.alarmActiveDaysFragment);
-//        Switch sActiveFragment = (Switch) convertView.findViewById(R.id.activeFragment);
-        // Populate the data into the template view using the data object
+        mContext=context;
+
+    }
+
+    @Override
+    public AlarmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= mInflate.inflate(R.layout.alarm_fragment, parent, false);
+        AlarmViewHolder holder = new AlarmViewHolder(view);
+
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(AlarmViewHolder holder, int position) {
+        Alarm alarm= mAlarms.get(position);
         if (alarm.getMinute()<10){
-            tvAlarmFragment.setText(alarm.getHour()+":0"+alarm.getMinute());
+            holder.tvAlarmFragment.setText(alarm.getHour()+":0"+alarm.getMinute());
         }
         else{
-            tvAlarmFragment.setText(alarm.getHour()+":"+alarm.getMinute());
+            holder.tvAlarmFragment.setText(alarm.getHour()+":"+alarm.getMinute());
         }
-        tvAmPmFragment.setText(alarm.getAmPm());
-//        sActiveFragment.setChecked(alarm.getState());
-        tvAlarmActiveDaysFragment.setText(alarm.getActiveDaysAsString());
+        holder.tvAmPmFragment.setText(alarm.getAmPm());
+        holder.sActiveFragment.setChecked(alarm.getState());
+        holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDaysAsString());
+    }
 
-        // Return the completed view to render on screen
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return mAlarms.size();
+    }
+
+    public void addAlarm(Alarm alarm){
+        mAlarms.add(alarm);
+        notifyDataSetChanged();
+    }
+
+    class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        private TextView tvAlarmFragment;
+        private TextView tvAmPmFragment;
+        private TextView tvAlarmActiveDaysFragment;
+        private Switch sActiveFragment;
+
+        public AlarmViewHolder(View itemView) {
+            super(itemView);
+            tvAlarmFragment = (TextView) itemView.findViewById(R.id.alarmTimeFragment);
+            tvAmPmFragment = (TextView) itemView.findViewById(R.id.amPmFragment);
+            tvAlarmActiveDaysFragment = (TextView) itemView.findViewById(R.id.alarmActiveDaysFragment);
+            sActiveFragment = (Switch) itemView.findViewById(R.id.activeFragment);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(mContext,"Alarm Clicked: "+this.getAdapterPosition(),Toast.LENGTH_SHORT).show();
+            if(sActiveFragment.isChecked()){
+                sActiveFragment.setChecked(false);
+                mAlarms.get(this.getAdapterPosition()).setState(false);
+            }else{
+                sActiveFragment.setChecked(true);
+                mAlarms.get(this.getAdapterPosition()).setState(true);
+            }
+
+        }
     }
 }
