@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class AlarmTone {
     private String mName;
     private String mUri;
+    private Boolean isActive;
 
     public AlarmTone(String alarmName,String alarmUri) {
         mUri=alarmUri;
         mName=alarmName;
+        isActive=false;
     }
 
     public String getName() {
@@ -24,5 +26,14 @@ public class AlarmTone {
     }
     public String getUri(){
         return mUri;
+    }
+    public void setActive(){
+        isActive=true;
+    }
+    public void setInActive(){
+        isActive=false;
+    }
+    public Boolean getIsActive(){
+        return isActive;
     }
 }

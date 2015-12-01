@@ -2,8 +2,10 @@ package com.ajanthan.alarmbot;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,6 +23,7 @@ import java.util.ArrayList;
  * Created by ajanthan on 15-11-10.
  */
 public class AlarmDetailActivity extends Activity {
+    private static final String PREFS_NAME = "currentAlarmTone";
     private Button bSave;
     private Button bCancel;
 
@@ -68,6 +72,16 @@ public class AlarmDetailActivity extends Activity {
 
     }
 
+    @Override
+    protected void onStart() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String restoredText = prefs.getString("currentAlarmToneName", "");
+        if(!restoredText.isEmpty()) {
+            tvTone.setText(restoredText);
+        }
+        super.onStart();
+    }
+
     private void setFeildOnClickListener() {
         lRepeatWeeklyFragment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +127,7 @@ public class AlarmDetailActivity extends Activity {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Alarm newAlarm = new Alarm(0, 0, getActiveDays(), getRepeatWeekly(), getAlarmType(),
+                RealmAlarm newAlarm = new RealmAlarm(0, 0, getActiveDays(), getRepeatWeekly(), getAlarmType(),
                         getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
 
                 //TODO save alarm instance and go back to list view

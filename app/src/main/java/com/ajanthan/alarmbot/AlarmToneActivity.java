@@ -1,18 +1,13 @@
 package com.ajanthan.alarmbot;
 
 import android.app.Activity;
-import android.app.ListActivity;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,62 +15,50 @@ import java.util.ArrayList;
  * Created by ajanthan on 15-11-22.
  */
 public class AlarmToneActivity extends Activity {
-    private ListView lvOptions;
+    private RecyclerView rAlarmTones;
     private AlarmToneAdapter adapterAlarmTone;
-    private Ringtone currentRingTone;
 
+    public static final String PREFS_NAME = "currentAlarmTone";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_tone_list);
 
-        lvOptions = (ListView) findViewById(R.id.optionsList);
-        ArrayList<AlarmTone> aAlarmTone = new ArrayList<AlarmTone>();
-        adapterAlarmTone = new AlarmToneAdapter(this, aAlarmTone);
-        lvOptions.setAdapter(adapterAlarmTone);
-        fetchAlarmTone();
-        setOnClickListener();
+        rAlarmTones = (RecyclerView) findViewById(R.id.alarmTonesList);
+        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone());
+        rAlarmTones.setAdapter(adapterAlarmTone);
+        rAlarmTones.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
     @Override
     protected void onPause() {
-        if(currentRingTone!=null){
-            currentRingTone.stop();
-        }
+        adapterAlarmTone.stopCurrentRingTone();
+        AlarmTone alarmTone = adapterAlarmTone.getCurrentAlarmTone();
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString("currentAlarmToneName", alarmTone.getName());
+        editor.putString("currentAlarmToneUri", alarmTone.getUri());
+        editor.commit();
+        Log.e("this","2: "+ alarmTone.getName());
+
         super.onPause();
     }
 
-    private void fetchAlarmTone() {
+    private ArrayList<AlarmTone> fetchAlarmTone() {
         RingtoneManager manager = new RingtoneManager(this);
         manager.setType(RingtoneManager.TYPE_ALARM);
         Cursor cursor = manager.getCursor();
+        ArrayList<AlarmTone> alarmTones = new ArrayList<AlarmTone>();
 
         while (cursor.moveToNext()) {
             String notificationTitle = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
             String notificationUri = cursor.getString(RingtoneManager.URI_COLUMN_INDEX);
-            adapterAlarmTone.add(new AlarmTone(notificationTitle, notificationUri));
+            alarmTones.add(new AlarmTone(notificationTitle, notificationUri));
         }
+        return alarmTones;
 
     }
 
-    private void setOnClickListener() {
-        lvOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                playAlarmTone(adapterAlarmTone.getItem(position).getUri());
-            }
-        });
-    }
 
-    private void playAlarmTone(String notificationUri) {
-        if (currentRingTone != null) {
-            Log.e("Piano", notificationUri);
-            currentRingTone.stop();
-        }
-        Uri notification = Uri.parse(notificationUri);
-        currentRingTone = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        currentRingTone.play();
-    }
 }

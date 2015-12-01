@@ -29,32 +29,8 @@ public class TabFragment1 extends Fragment {
         adapterAlarm = new AlarmAdapter(getActivity(), getAlarms());
         rAlarms.setAdapter(adapterAlarm);
         rAlarms.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapterAlarm.addAlarm(new Alarm());
+        adapterAlarm.addAlarm(new RealmAlarm());
         btnAddAlarm = (ImageButton) view.findViewById(R.id.addAlarm);
-//        lvAlarms.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View item, int position, long rowId) {
-//                Toast.makeText(getActivity().getApplicationContext(), "alarm clicked", Toast.LENGTH_LONG).show();
-//                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
-//                startActivity(i);
-//            }
-//        });
-        rAlarms.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-            }
-        });
 
         return view;
     }
@@ -67,10 +43,6 @@ public class TabFragment1 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void setupAlarmSelectedListener() {
-        Toast.makeText(getActivity().getApplicationContext(), "alarm click listener called", Toast.LENGTH_LONG).show();
-    }
-
     private void setupAddAlarmListener() {
         btnAddAlarm.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
@@ -80,7 +52,7 @@ public class TabFragment1 extends Fragment {
                 for (int i = 0; i < 7; i++) {
                     temp[i] = true;
                 }
-                adapterAlarm.addAlarm(new Alarm());
+                adapterAlarm.addAlarm(new RealmAlarm());
 //                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
 //                startActivity(i);
 //                adapterAlarm.add(new Alarm(0, 0, true, temp));
