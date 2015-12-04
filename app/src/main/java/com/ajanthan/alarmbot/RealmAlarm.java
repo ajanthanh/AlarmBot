@@ -5,141 +5,167 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 
 /**
  * Created by ajanthan on 15-11-04.
  */
-public class RealmAlarm extends Realm implements Alarm  {
-    private int mHour;
-    private int mMinute;
-    private ArrayList<Boolean> mActiveDays;
-    private Boolean mState;
+public class RealmAlarm extends RealmObject implements Alarm  {
+    @Ignore
+    private int hour;
+    private int minute;
+    private ArrayList<Boolean> activeDays;
+    private Boolean state;
     private String amPm;
-    private int mVolume;
-    private String mTone;
-    private Boolean mSmartAlarm;
-    private Boolean mSnooze;
-    private String mAlarmType;
-    private Boolean mRepeatWeekly;
+    private int volume;
+    private String tone;
+    private Boolean smartAlarm;
+    private Boolean snooze;
+    private String alarmType;
+    private Boolean repeatWeekly;
+    private RealmAlarmHelper realmAlarmHelper;
 
     public RealmAlarm(){
-        mHour = 12;
+        hour = 12;
         amPm = "PM";
-        mState=false;
-        mMinute = 0;
-        mActiveDays= new ArrayList<Boolean>(7);
-        Collections.fill(mActiveDays,Boolean.FALSE);
-        mRepeatWeekly = false;
-        mAlarmType = "Default";
-        mVolume = 1;                 //TODO: implement volume
-        mTone = "Default";
-        mSnooze = false;
-        mSmartAlarm = false;
+        state=false;
+        minute = 0;
+        activeDays= new ArrayList<Boolean>(7);
+        Collections.fill(activeDays,Boolean.FALSE);
+        repeatWeekly = false;
+        alarmType = "Default";
+        volume = 1;                 //TODO: implement volume
+        tone = "Default";
+        snooze = false;
+        smartAlarm = false;
     }
 
     public RealmAlarm(int hour, int minute, ArrayList<Boolean> activeDays, Boolean repeatWeekly, String alarmType,
                       int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
         if (hour == 0) {
-            mHour = 12;
+            this.hour = 12;
             amPm = "AM";
-        } else if (mHour / 12 == 0) {
-            mHour = hour;
+        } else if (hour / 12 == 0) {
+            this.hour = hour;
             amPm = "AM";
-        } else if (mHour / 12 == 1) {
-            mHour = hour;
+        } else if (hour / 12 == 1) {
+            this.hour = hour;
             amPm = "PM";
         }
-        mMinute = minute;
-        mActiveDays = activeDays;
-        mRepeatWeekly = repeatWeekly;
-        mAlarmType = alarmType;
-        mVolume = volume;                 //TODO: implement volume
-        mTone = tone;
-        mSnooze = snooze;
-        mSmartAlarm = smartAlarm;
-        mState = state;
+        this.minute = minute;
+        this.activeDays = activeDays;
+        this.repeatWeekly = repeatWeekly;
+        this.alarmType = alarmType;
+        this.volume = volume;                 //TODO: implement volume
+        this.tone = tone;
+        this.snooze = snooze;
+        this.smartAlarm = smartAlarm;
+        this.state = state;
 
     }
 
     public int getHour() {
-        return mHour;
+        return hour;
     }
 
     public Boolean getState() {
-        return mState;
-    }
-
-    public ArrayList<Boolean> getmActiveDays() {
-        return mActiveDays;
+        return state;
     }
 
     public int getMinute() {
-        return mMinute;
+        return minute;
     }
 
     public String getAmPm() {
         return amPm;
     }
 
-    public String getActiveDaysAsString() {
+    public String getActiveDays() {
         String day = "";
-        Log.e("stacraft", mActiveDays.size() + "");
-        for (int j = 0; j < mActiveDays.size(); j++) {
+        Log.e("stacraft", activeDays.size() + "");
+        for (int j = 0; j < activeDays.size(); j++) {
             Log.e("stacraft", j + "");
-            if (mActiveDays.get(j)) {
-                day += getDay(j) + " ";
+            if (activeDays.get(j)) {
+                day += realmAlarmHelper.getDay(j) + " ";
             }
         }
         return day;
     }
 
-    public int getmVolume() {
-        return mVolume;
+    public int getVolume() {
+        return volume;
     }
 
-    public String getmTone() {
-        return mTone;
+    public String getTone() {
+        return tone;
     }
 
-    public Boolean getmSmartAlarm() {
-        return mSmartAlarm;
+    public Boolean getSmartAlarm() {
+        return smartAlarm;
     }
 
-    public Boolean getmSnooze() {
-        return mSnooze;
+    public Boolean getSnooze() {
+        return snooze;
     }
 
-    public String getmAlarmType() {
-        return mAlarmType;
+    public String getAlarmType() {
+        return alarmType;
     }
 
-    public Boolean getmRepeatWeekly() {
-        return mRepeatWeekly;
-    }
-
-    private String getDay(int i) {
-        switch (i) {
-            case 0:
-                return "SUN";
-            case 1:
-                return "MON";
-            case 2:
-                return "TUE";
-            case 3:
-                return "WED";
-            case 4:
-                return "THU";
-            case 5:
-                return "FRI";
-            case 6:
-                return "SAT";
-        }
-        return "";
+    public Boolean getRepeatWeekly() {
+        return repeatWeekly;
     }
 
     public void setState(Boolean mState) {
-        this.mState = mState;
+        this.state = mState;
+    }
+
+    public RealmAlarmHelper getRealmAlarmHelper(){
+        return realmAlarmHelper;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public void setActiveDays(ArrayList<Boolean> activeDays) {
+        this.activeDays = activeDays;
+    }
+
+    public void setAmPm(String amPm) {
+        this.amPm = amPm;
+    }
+
+    public void setVolume(int volume) {
+        this.volume = volume;
+    }
+
+    public void setTone(String tone) {
+        this.tone = tone;
+    }
+
+    public void setSmartAlarm(Boolean smartAlarm) {
+        this.smartAlarm = smartAlarm;
+    }
+
+    public void setSnooze(Boolean snooze) {
+        this.snooze = snooze;
+    }
+
+    public void setAlarmType(String alarmType) {
+        this.alarmType = alarmType;
+    }
+
+    public void setRepeatWeekly(Boolean repeatWeekly) {
+        this.repeatWeekly = repeatWeekly;
+    }
+
+    public void setRealmAlarmHelper(RealmAlarmHelper realmAlarmHelper) {
+        this.realmAlarmHelper = realmAlarmHelper;
     }
 }

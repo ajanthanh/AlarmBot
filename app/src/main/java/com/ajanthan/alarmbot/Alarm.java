@@ -24,19 +24,19 @@ public interface Alarm {
 
     public String getAmPm();
 
-    public String getActiveDaysAsString();
+    public String getActiveDays();
 
-    public int getmVolume();
+    public int getVolume();
 
-    public String getmTone();
+    public String getTone();
 
-    public Boolean getmSmartAlarm();
+    public Boolean getSmartAlarm();
 
-    public Boolean getmSnooze();
+    public Boolean getSnooze();
 
-    public String getmAlarmType();
+    public String getAlarmType();
 
-    public Boolean getmRepeatWeekly();
+    public Boolean getRepeatWeekly();
 
     public void setState(Boolean mState);
 }

@@ -51,7 +51,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         }
         holder.tvAmPmFragment.setText(alarm.getAmPm());
         holder.sActiveFragment.setChecked(alarm.getState());
-        holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDaysAsString());
+        holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDays());
     }
 
     @Override
