@@ -127,7 +127,7 @@ public class AlarmDetailActivity extends Activity {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RealmAlarm newAlarm = new RealmAlarm(0, 0, getActiveDays(), getRepeatWeekly(), getAlarmType(),
+                RealmAlarm newAlarm = new RealmAlarm(0, 0, getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
                         getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
 
                 //TODO save alarm instance and go back to list view
@@ -141,10 +141,10 @@ public class AlarmDetailActivity extends Activity {
         });
     }
 
-    private ArrayList<Boolean> getActiveDays() {
-        ArrayList<Boolean> activeDays = new ArrayList<Boolean>();
+    private Boolean[] getActiveDays() {
+        Boolean[] activeDays = new Boolean[7];
         for (int i = 0; i < bActiveDays.size(); i++) {
-            activeDays.add(bActiveDays.get(i).isSelected());
+            activeDays[i]=(bActiveDays.get(i).isSelected());
         }
         return activeDays;
     }
@@ -178,4 +178,37 @@ public class AlarmDetailActivity extends Activity {
     private Boolean getSmartAlarm() {
         return sSmartAlarm.isSelected();
     }
+
+    private String getActiveDaysAsString(Boolean[] activeDays) {
+        String day = "";
+        for (int j = 0; j < activeDays.length; j++) {
+            Log.e("stacraft", j + "");
+            if (activeDays[j]) {
+                day += getDay(j) + " ";
+            }
+        }
+        return day;
+
+    }
+
+    public String getDay(int i) {
+        switch (i) {
+            case 0:
+                return "SUN";
+            case 1:
+                return "MON";
+            case 2:
+                return "TUE";
+            case 3:
+                return "WED";
+            case 4:
+                return "THU";
+            case 5:
+                return "FRI";
+            case 6:
+                return "SAT";
+        }
+        return "";
+    }
+
 }

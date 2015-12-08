@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,9 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class TabFragment1 extends Fragment {
 
@@ -31,7 +35,6 @@ public class TabFragment1 extends Fragment {
         rAlarms.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapterAlarm.addAlarm(new RealmAlarm());
         btnAddAlarm = (ImageButton) view.findViewById(R.id.addAlarm);
-
         return view;
     }
 
@@ -43,6 +46,11 @@ public class TabFragment1 extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupAddAlarmListener() {
         btnAddAlarm.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
@@ -52,7 +60,13 @@ public class TabFragment1 extends Fragment {
                 for (int i = 0; i < 7; i++) {
                     temp[i] = true;
                 }
-                adapterAlarm.addAlarm(new RealmAlarm());
+
+                RealmAlarm newAlarm = new RealmAlarm();
+                adapterAlarm.addAlarm(newAlarm);
+                Realm realm= Realm.getInstance(getActivity());
+                realm.beginTransaction();
+                Alarm realmUser = realm.copyToRealm(newAlarm);
+                realm.commitTransaction();
 //                Intent i = new Intent(getActivity(), AlarmDetailActivity.class);
 //                startActivity(i);
 //                adapterAlarm.add(new Alarm(0, 0, true, temp));
@@ -61,7 +75,14 @@ public class TabFragment1 extends Fragment {
     }
 
     private ArrayList<Alarm> getAlarms(){
-        return null;
+        ArrayList<Alarm> alarms = new ArrayList<Alarm>();
+        Realm realm= Realm.getInstance(getActivity());
+        RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
+                .findAll();
+        for(int i =0; i<result.size();i++){
+            alarms.add(result.get(i));
+        }
+        return alarms;
     }
 
     @Override

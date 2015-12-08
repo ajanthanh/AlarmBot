@@ -1,9 +1,6 @@
 package com.ajanthan.alarmbot;
 
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
@@ -15,7 +12,7 @@ public class RealmAlarm extends RealmObject implements Alarm  {
     @Ignore
     private int hour;
     private int minute;
-    private ArrayList<Boolean> activeDays;
+    private String activeDays;
     private Boolean state;
     private String amPm;
     private int volume;
@@ -24,15 +21,13 @@ public class RealmAlarm extends RealmObject implements Alarm  {
     private Boolean snooze;
     private String alarmType;
     private Boolean repeatWeekly;
-    private RealmAlarmHelper realmAlarmHelper;
 
     public RealmAlarm(){
         hour = 12;
         amPm = "PM";
         state=false;
         minute = 0;
-        activeDays= new ArrayList<Boolean>(7);
-        Collections.fill(activeDays,Boolean.FALSE);
+        activeDays ="";
         repeatWeekly = false;
         alarmType = "Default";
         volume = 1;                 //TODO: implement volume
@@ -41,7 +36,7 @@ public class RealmAlarm extends RealmObject implements Alarm  {
         smartAlarm = false;
     }
 
-    public RealmAlarm(int hour, int minute, ArrayList<Boolean> activeDays, Boolean repeatWeekly, String alarmType,
+    public RealmAlarm(int hour, int minute, String activeDays, Boolean repeatWeekly, String alarmType,
                       int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
         if (hour == 0) {
             this.hour = 12;
@@ -82,15 +77,7 @@ public class RealmAlarm extends RealmObject implements Alarm  {
     }
 
     public String getActiveDays() {
-        String day = "";
-        Log.e("stacraft", activeDays.size() + "");
-        for (int j = 0; j < activeDays.size(); j++) {
-            Log.e("stacraft", j + "");
-            if (activeDays.get(j)) {
-                day += realmAlarmHelper.getDay(j) + " ";
-            }
-        }
-        return day;
+        return activeDays;
     }
 
     public int getVolume() {
@@ -121,10 +108,6 @@ public class RealmAlarm extends RealmObject implements Alarm  {
         this.state = mState;
     }
 
-    public RealmAlarmHelper getRealmAlarmHelper(){
-        return realmAlarmHelper;
-    }
-
     public void setHour(int hour) {
         this.hour = hour;
     }
@@ -133,7 +116,7 @@ public class RealmAlarm extends RealmObject implements Alarm  {
         this.minute = minute;
     }
 
-    public void setActiveDays(ArrayList<Boolean> activeDays) {
+    public void setActiveDays(String activeDays) {
         this.activeDays = activeDays;
     }
 
@@ -165,7 +148,4 @@ public class RealmAlarm extends RealmObject implements Alarm  {
         this.repeatWeekly = repeatWeekly;
     }
 
-    public void setRealmAlarmHelper(RealmAlarmHelper realmAlarmHelper) {
-        this.realmAlarmHelper = realmAlarmHelper;
-    }
 }

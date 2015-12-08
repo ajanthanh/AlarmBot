@@ -1,42 +1,33 @@
 package com.ajanthan.alarmbot;
 
-import android.util.Log;
-import android.widget.Button;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
-//import io.realm.RealmObject;
 
 /**
  * Created by ajanthan on 15-11-04.
  */
 public interface Alarm {
 
-    public int getHour();
+    int getHour();
 
-    public Boolean getState();
+    Boolean getState();
 
-    public ArrayList<Boolean> getmActiveDays();
+    String getActiveDays();
 
-    public int getMinute();
+    int getMinute();
 
-    public String getAmPm();
+    String getAmPm();
 
-    public String getActiveDays();
+    int getVolume();
 
-    public int getVolume();
+    String getTone();
 
-    public String getTone();
+    Boolean getSmartAlarm();
 
-    public Boolean getSmartAlarm();
+    Boolean getSnooze();
 
-    public Boolean getSnooze();
+    String getAlarmType();
 
-    public String getAlarmType();
+    Boolean getRepeatWeekly();
 
-    public Boolean getRepeatWeekly();
-
-    public void setState(Boolean mState);
+    void setState(Boolean mState);
 }
