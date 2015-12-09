@@ -3,6 +3,7 @@ package com.ajanthan.alarmbot;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+
 /**
  * Created by ajanthan on 15-11-26.
  */
@@ -20,9 +23,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     private LayoutInflater mInflate;
     private ArrayList<Alarm> mAlarms;
     private Context mContext;
+    private Realm mRealm;
 
 
-    public AlarmAdapter(Context context, ArrayList<Alarm> alarms) {
+    public AlarmAdapter(Context context, ArrayList<Alarm> alarms, Realm realm) {
         mInflate = LayoutInflater.from(context);
         if (alarms == null) {
             mAlarms = new ArrayList<Alarm>();
@@ -31,7 +35,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             mAlarms = alarms;
         }
         mContext = context;
-
+        mRealm = realm;
+        Log.e("Pollo","OnCreate");
     }
 
     @Override
@@ -50,6 +55,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             holder.tvAlarmFragment.setText(alarm.getHour() + ":" + alarm.getMinute());
         }
         holder.tvAmPmFragment.setText(alarm.getAmPm());
+        Log.e("Pollo", alarm.getState() + " || " + position);
         holder.sActiveFragment.setChecked(alarm.getState());
         holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDays());
     }
@@ -59,10 +65,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         return mAlarms.size();
     }
 
-    public void addAlarm(Alarm alarm) {
-        mAlarms.add(alarm);
-        notifyDataSetChanged();
+    public void update(ArrayList<Alarm> alarms) {
+        mAlarms=alarms;
+        notifyItemRemoved(alarms.size());
     }
+
 
     class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -80,6 +87,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             sActiveFragment = (Switch) itemView.findViewById(R.id.activeFragment);
             mContext = context;
             itemView.setOnClickListener(this);
+            setOnChangeStateListener();
         }
 
         @Override
@@ -88,6 +96,26 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             Intent i = new Intent(mContext, AlarmDetailActivity.class);
             mContext.startActivity(i);
 
+        }
+
+        private void setOnChangeStateListener(){
+            sActiveFragment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mRealm.beginTransaction();
+                    if (mAlarms.get(getAdapterPosition()).getState()){
+                        mAlarms.get(getAdapterPosition()).setState(false);
+                        Log.e("Pollo","setFalse");
+                    }
+                    else{
+                        mAlarms.get(getAdapterPosition()).setState(true);
+                        Log.e("Pollo", "setTrue");
+                    }
+                    mRealm.commitTransaction();
+                    Log.e("Pollo", mAlarms.get(getAdapterPosition()).getState() + " | " + getAdapterPosition());
+                    notifyDataSetChanged();
+                }
+            });
         }
     }
 }

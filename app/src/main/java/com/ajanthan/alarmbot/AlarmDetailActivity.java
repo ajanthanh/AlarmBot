@@ -19,11 +19,18 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 /**
  * Created by ajanthan on 15-11-10.
  */
 public class AlarmDetailActivity extends Activity {
     private static final String PREFS_NAME = "currentAlarmTone";
+
+    private Alarm mAlarm;
+    private Realm mRealm;
+
     private Button bSave;
     private Button bCancel;
 
@@ -67,6 +74,11 @@ public class AlarmDetailActivity extends Activity {
         bActiveDays.add((Button) findViewById(R.id.activeDayFriday));
         bActiveDays.add((Button) findViewById(R.id.activeDaySaturday));
 
+        mRealm= Realm.getInstance(this);
+        RealmResults<RealmAlarm> result = mRealm.where(RealmAlarm.class)
+                .equalTo("key", getIntent().getLongExtra("key", 0))
+                .findAll();
+        mAlarm=result.get(0);
         setCustomToolBarListeners();
         setFeildOnClickListener();
 
@@ -127,10 +139,20 @@ public class AlarmDetailActivity extends Activity {
         bSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RealmAlarm newAlarm = new RealmAlarm(0, 0, getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
-                        getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
+                mRealm.beginTransaction();
+                mAlarm.setHour(getHour());
+                mAlarm.setMinute(getMinute());
+                mAlarm.setActiveDays(getActiveDaysAsString(getActiveDays()));
+                mAlarm.setRepeatWeekly(getRepeatWeekly());
+                mAlarm.setAlarmType(getAlarmType());
+                mAlarm.setVolume(getVolume());
+                mAlarm.setTone(getTone());
+                mAlarm.setSnooze(getSnooze());
+                mAlarm.setSmartAlarm(getSmartAlarm());
+                Log.e("kool", mAlarm.toString());
+                mRealm.commitTransaction();
+                finish();
 
-                //TODO save alarm instance and go back to list view
             }
         });
         bCancel.setOnClickListener(new View.OnClickListener() {
@@ -142,10 +164,13 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private Boolean[] getActiveDays() {
+        Log.e("Blahblah","getActiveDays");
         Boolean[] activeDays = new Boolean[7];
         for (int i = 0; i < bActiveDays.size(); i++) {
-            activeDays[i]=(bActiveDays.get(i).isSelected());
+            activeDays[i]=bActiveDays.get(i).isSelected();
+                Log.e("Blahblah",bActiveDays.get(i).isSelected()+" | "+bActiveDays.get(i).isActivated()+" | "+ bActiveDays.get(i).isSelected());
         }
+        Log.e("Blahblah",activeDays.toString());
         return activeDays;
     }
 
@@ -179,7 +204,11 @@ public class AlarmDetailActivity extends Activity {
         return sSmartAlarm.isSelected();
     }
 
+    private int getHour(){return 10;}
+    private int getMinute(){return 10;}
+
     private String getActiveDaysAsString(Boolean[] activeDays) {
+        Log.e("Blahblah","getActiveDaysAsString");
         String day = "";
         for (int j = 0; j < activeDays.length; j++) {
             Log.e("stacraft", j + "");
@@ -187,6 +216,7 @@ public class AlarmDetailActivity extends Activity {
                 day += getDay(j) + " ";
             }
         }
+        Log.e("Blahblah2",day);
         return day;
 
     }

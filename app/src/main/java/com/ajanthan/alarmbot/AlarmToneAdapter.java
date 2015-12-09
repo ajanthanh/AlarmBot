@@ -54,7 +54,6 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
         AlarmTone alarmTone = mAlarmTones.get(position);
         holder.rbAlarmToneActive.setChecked(alarmTone.getIsActive());
         holder.tvAlarmToneName.setText(alarmTone.getName());
-        Log.e("Pepe",alarmTone.getIsActive()+"" );
     }
 
     @Override

@@ -1,15 +1,21 @@
 package com.ajanthan.alarmbot;
 
+import android.util.Log;
+
+import java.io.Serializable;
 import java.util.Arrays;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by ajanthan on 15-11-04.
  */
-public class RealmAlarm extends RealmObject implements Alarm  {
-    @Ignore
+public class RealmAlarm extends RealmObject implements Alarm, Serializable {
+    @PrimaryKey
+    private long key;
+
     private int hour;
     private int minute;
     private String activeDays;
@@ -23,17 +29,20 @@ public class RealmAlarm extends RealmObject implements Alarm  {
     private Boolean repeatWeekly;
 
     public RealmAlarm(){
-        hour = 12;
-        amPm = "PM";
-        state=false;
-        minute = 0;
-        activeDays ="";
-        repeatWeekly = false;
-        alarmType = "Default";
-        volume = 1;                 //TODO: implement volume
-        tone = "Default";
-        snooze = false;
-        smartAlarm = false;
+        this.hour = 12;
+        this.amPm = "PM";
+        this.state=true;
+        this.minute = 0;
+        this.activeDays ="";
+        this.repeatWeekly = false;
+        this.alarmType = "Default";
+        this.volume = 1;                 //TODO: implement volume
+        this.tone = "Default";
+        this.snooze = false;
+        this.smartAlarm = false;
+        Log.e("Pollo", "Default Constructor Called");
+        this.key=System.currentTimeMillis();
+
     }
 
     public RealmAlarm(int hour, int minute, String activeDays, Boolean repeatWeekly, String alarmType,
@@ -57,6 +66,7 @@ public class RealmAlarm extends RealmObject implements Alarm  {
         this.snooze = snooze;
         this.smartAlarm = smartAlarm;
         this.state = state;
+        this.key=System.currentTimeMillis();
 
     }
 
@@ -148,4 +158,11 @@ public class RealmAlarm extends RealmObject implements Alarm  {
         this.repeatWeekly = repeatWeekly;
     }
 
+    public long getKey() {
+        return key;
+    }
+
+    public void setKey(long key) {
+        this.key = key;
+    }
 }

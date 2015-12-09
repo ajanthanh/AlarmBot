@@ -134,19 +134,21 @@
                         android:textOff="T"
                         android:textOn="T"/>
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDayFriday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="F" />
+                        android:textOn="F"
+                        android:textOff="F"/>
 
-                    <Button
+                    <ToggleButton
                         android:id="@+id/activeDaySaturday"
                         style="@style/ActiveDaysBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="S" />
+                        android:textOn="S"
+                        android:textOff="S"/>
 
                 </LinearLayout>
 
