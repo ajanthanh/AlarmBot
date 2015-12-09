@@ -41,7 +41,6 @@ public class TabFragment1 extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
         setupAddAlarmListener();
         super.onViewCreated(view, savedInstanceState);
     }
@@ -56,16 +55,10 @@ public class TabFragment1 extends Fragment {
         btnAddAlarm.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RealmAlarm newAlarm = new RealmAlarm();
-                mRealm.beginTransaction();
-                mRealm.copyToRealm(newAlarm);
-                mRealm.commitTransaction();
                 Intent i = new Intent(getContext(), AlarmDetailActivity.class);
-                i.putExtra("key",newAlarm.getKey());
+                i.putExtra("cmd", "new");
                 getContext().startActivity(i);
                 Toast.makeText(getActivity().getApplicationContext(), "add alarm", Toast.LENGTH_LONG).show();
-
-                update();
             }
         });
     }
@@ -83,6 +76,7 @@ public class TabFragment1 extends Fragment {
 
     private void update(){
         adapterAlarm.update(fetchAlarms());
+        Log.e("Peanuts","Update Called");
     }
 
 }

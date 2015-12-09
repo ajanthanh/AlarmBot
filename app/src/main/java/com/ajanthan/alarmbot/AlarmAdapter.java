@@ -55,9 +55,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             holder.tvAlarmFragment.setText(alarm.getHour() + ":" + alarm.getMinute());
         }
         holder.tvAmPmFragment.setText(alarm.getAmPm());
-        Log.e("Pollo", alarm.getState() + " || " + position);
         holder.sActiveFragment.setChecked(alarm.getState());
         holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDays());
+        Log.e("Pollo", alarm.getActiveDays() + " || " + position);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
     public void update(ArrayList<Alarm> alarms) {
         mAlarms=alarms;
-        notifyItemRemoved(alarms.size());
+        notifyDataSetChanged();
     }
 
 
@@ -94,6 +94,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         public void onClick(View v) {
             Toast.makeText(mContext, "Alarm Clicked: " + this.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(mContext, AlarmDetailActivity.class);
+            i.putExtra("cmd", "edit");
+            i.putExtra("key",mAlarms.get(getAdapterPosition()).getKey());
             mContext.startActivity(i);
 
         }
@@ -103,11 +105,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
                 @Override
                 public void onClick(View v) {
                     mRealm.beginTransaction();
-                    if (mAlarms.get(getAdapterPosition()).getState()){
+                    if (mAlarms.get(getAdapterPosition()).getState()) {
                         mAlarms.get(getAdapterPosition()).setState(false);
-                        Log.e("Pollo","setFalse");
-                    }
-                    else{
+                        Log.e("Pollo", "setFalse");
+                    } else {
                         mAlarms.get(getAdapterPosition()).setState(true);
                         Log.e("Pollo", "setTrue");
                     }

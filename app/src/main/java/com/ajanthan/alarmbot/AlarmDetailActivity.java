@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class AlarmDetailActivity extends Activity {
     private SeekBar sVolume;
     private Switch sSnooze;
     private Switch sSmartAlarm;
-    private ArrayList<Button> bActiveDays;
+    private ArrayList<ToggleButton> bActiveDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,20 +66,22 @@ public class AlarmDetailActivity extends Activity {
         sVolume = (SeekBar) findViewById(R.id.volume);
         sSnooze = (Switch) findViewById(R.id.snooze);
         sSmartAlarm = (Switch) findViewById(R.id.smartAlarm);
-        bActiveDays = new ArrayList<Button>();
-        bActiveDays.add((Button) findViewById(R.id.activeDaySunday));
-        bActiveDays.add((Button) findViewById(R.id.activeDayMonday));
-        bActiveDays.add((Button) findViewById(R.id.activeDayTuesday));
-        bActiveDays.add((Button) findViewById(R.id.activeDayWednesday));
-        bActiveDays.add((Button) findViewById(R.id.activeDayThursday));
-        bActiveDays.add((Button) findViewById(R.id.activeDayFriday));
-        bActiveDays.add((Button) findViewById(R.id.activeDaySaturday));
+        bActiveDays = new ArrayList<ToggleButton>();
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySunday));
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDayMonday));
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDayTuesday));
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDayWednesday));
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDayThursday));
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDayFriday));
+        bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySaturday));
 
         mRealm= Realm.getInstance(this);
-        RealmResults<RealmAlarm> result = mRealm.where(RealmAlarm.class)
-                .equalTo("key", getIntent().getLongExtra("key", 0))
-                .findAll();
-        mAlarm=result.get(0);
+        if(getIntent().getStringExtra("cmd").equals("edit")){
+            RealmResults<RealmAlarm> result = mRealm.where(RealmAlarm.class)
+                    .equalTo("key", getIntent().getLongExtra("key", 0))
+                    .findAll();
+            mAlarm=result.get(0);
+        }
         setCustomToolBarListeners();
         setFeildOnClickListener();
 
@@ -140,16 +143,23 @@ public class AlarmDetailActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mRealm.beginTransaction();
-                mAlarm.setHour(getHour());
-                mAlarm.setMinute(getMinute());
-                mAlarm.setActiveDays(getActiveDaysAsString(getActiveDays()));
-                mAlarm.setRepeatWeekly(getRepeatWeekly());
-                mAlarm.setAlarmType(getAlarmType());
-                mAlarm.setVolume(getVolume());
-                mAlarm.setTone(getTone());
-                mAlarm.setSnooze(getSnooze());
-                mAlarm.setSmartAlarm(getSmartAlarm());
-                Log.e("kool", mAlarm.toString());
+                RealmAlarm alarm;
+                if (getIntent().getStringExtra("cmd").equals("new")) {
+                    alarm = new RealmAlarm(getHour(), getMinute(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
+                            getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
+                    mRealm.copyToRealm(alarm);
+                } else {
+                    mAlarm.setHour(getHour());
+                    mAlarm.setMinute(getMinute());
+                    mAlarm.setActiveDays(getActiveDaysAsString(getActiveDays()));
+                    mAlarm.setRepeatWeekly(getRepeatWeekly());
+                    mAlarm.setAlarmType(getAlarmType());
+                    mAlarm.setVolume(getVolume());
+                    mAlarm.setTone(getTone());
+                    mAlarm.setSnooze(getSnooze());
+                    mAlarm.setSmartAlarm(getSmartAlarm());
+                    Log.e("kool", mAlarm.toString());
+                }
                 mRealm.commitTransaction();
                 finish();
 
@@ -164,11 +174,10 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private Boolean[] getActiveDays() {
-        Log.e("Blahblah","getActiveDays");
+        Log.e("Blahblah", "getActiveDays");
         Boolean[] activeDays = new Boolean[7];
         for (int i = 0; i < bActiveDays.size(); i++) {
-            activeDays[i]=bActiveDays.get(i).isSelected();
-                Log.e("Blahblah",bActiveDays.get(i).isSelected()+" | "+bActiveDays.get(i).isActivated()+" | "+ bActiveDays.get(i).isSelected());
+            activeDays[i]=bActiveDays.get(i).isChecked();
         }
         Log.e("Blahblah",activeDays.toString());
         return activeDays;
