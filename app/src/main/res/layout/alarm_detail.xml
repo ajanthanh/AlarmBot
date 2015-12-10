@@ -167,12 +167,11 @@
                         android:textSize="@dimen/alarm_detail_text_size"
                         android:text="Repeat weekly" />
 
-                    <Spinner
+                    <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/repeatWeekly"
-                        android:entries="@array/repeat_weekly_options"
-                        style="@style/customSpinner"/>
+                        android:layout_alignParentRight="true"/>
 
                 </LinearLayout>
 

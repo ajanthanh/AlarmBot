@@ -3,16 +3,18 @@ package com.ajanthan.alarmbot;
 import android.util.Log;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by ajanthan on 15-11-04.
  */
 public class RealmAlarm extends RealmObject implements Alarm, Serializable {
+    public final static int SOUND =0;
+    public final static int VIBRATE =1;
+    public final static int SOUND_AND_VIBRATE =2;
+
     @PrimaryKey
     private long key;
 
@@ -25,7 +27,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
     private String tone;
     private Boolean smartAlarm;
     private Boolean snooze;
-    private String alarmType;
+    private int alarmType;
     private Boolean repeatWeekly;
 
     public RealmAlarm(){
@@ -35,7 +37,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         this.minute = 0;
         this.activeDays ="";
         this.repeatWeekly = false;
-        this.alarmType = "Default";
+        this.alarmType = 0;
         this.volume = 1;                 //TODO: implement volume
         this.tone = "Default";
         this.snooze = false;
@@ -45,7 +47,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
 
     }
 
-    public RealmAlarm(int hour, int minute, String activeDays, Boolean repeatWeekly, String alarmType,
+    public RealmAlarm(int hour, int minute, String activeDays, Boolean repeatWeekly, int alarmType,
                       int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
         if (hour == 0) {
             this.hour = 12;
@@ -106,7 +108,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         return snooze;
     }
 
-    public String getAlarmType() {
+    public int getAlarmType() {
         return alarmType;
     }
 
@@ -150,7 +152,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         this.snooze = snooze;
     }
 
-    public void setAlarmType(String alarmType) {
+    public void setAlarmType(int alarmType) {
         this.alarmType = alarmType;
     }
 

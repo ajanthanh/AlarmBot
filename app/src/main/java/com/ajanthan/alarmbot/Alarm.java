@@ -25,7 +25,7 @@ public interface Alarm {
 
     Boolean getSnooze();
 
-    String getAlarmType();
+    int getAlarmType();
 
     Boolean getRepeatWeekly();
 
@@ -49,7 +49,7 @@ public interface Alarm {
 
     void setSnooze(Boolean snooze);
 
-    void setAlarmType(String alarmType);
+    void setAlarmType(int alarmType);
 
     void setRepeatWeekly(Boolean repeatWeekly);
 

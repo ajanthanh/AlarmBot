@@ -4,18 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Scroller;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -39,8 +36,8 @@ public class AlarmDetailActivity extends Activity {
     private LinearLayout lAlarmTypeFragment;
     private LinearLayout lvolumeFragment;
     private TextView tvAlarmDate;
-    private Spinner tvRepeatWeekly;
-    private Spinner tvAlarmType;
+    private Switch sRepeatWeekly;
+    private Spinner sAlarmType;
     private TextView tvTone;
     private SeekBar sVolume;
     private Switch sSnooze;
@@ -60,8 +57,8 @@ public class AlarmDetailActivity extends Activity {
         lvolumeFragment = (LinearLayout) findViewById(R.id.volumeFragment);
 
         tvAlarmDate = (TextView) findViewById(R.id.alarmDate);
-        tvRepeatWeekly = (Spinner) findViewById(R.id.repeatWeekly);
-        tvAlarmType = (Spinner) findViewById(R.id.alarmType);
+        sRepeatWeekly = (Switch) findViewById(R.id.repeatWeekly);
+        sAlarmType = (Spinner) findViewById(R.id.alarmType);
         tvTone = (TextView) findViewById(R.id.alarmTone);
         sVolume = (SeekBar) findViewById(R.id.volume);
         sSnooze = (Switch) findViewById(R.id.snooze);
@@ -81,9 +78,28 @@ public class AlarmDetailActivity extends Activity {
                     .equalTo("key", getIntent().getLongExtra("key", 0))
                     .findAll();
             mAlarm=result.get(0);
+            setDetailActivityField();
         }
         setCustomToolBarListeners();
         setFeildOnClickListener();
+
+    }
+
+    private void setDetailActivityField() {
+        sRepeatWeekly.setChecked(true);
+        sAlarmType.setSelection(mAlarm.getAlarmType());
+        tvTone.setText(mAlarm.getTone());
+        sVolume.setProgress(mAlarm.getVolume());
+        sSnooze.setChecked(mAlarm.getSnooze());
+        sSmartAlarm.setChecked(mAlarm.getSmartAlarm());
+
+        if(mAlarm.getActiveDays().contains("SUN")) bActiveDays.get(0).setChecked(true);
+        if(mAlarm.getActiveDays().contains("MON")) bActiveDays.get(1).setChecked(true);
+        if(mAlarm.getActiveDays().contains("TUE")) bActiveDays.get(2).setChecked(true);
+        if(mAlarm.getActiveDays().contains("WED")) bActiveDays.get(3).setChecked(true);
+        if(mAlarm.getActiveDays().contains("THU")) bActiveDays.get(4).setChecked(true);
+        if(mAlarm.getActiveDays().contains("FRI")) bActiveDays.get(5).setChecked(true);
+        if(mAlarm.getActiveDays().contains("SAT")) bActiveDays.get(6).setChecked(true);
 
     }
 
@@ -101,22 +117,22 @@ public class AlarmDetailActivity extends Activity {
         lRepeatWeeklyFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvRepeatWeekly.performClick();
+                sRepeatWeekly.performClick();
             }
         });
 
         lAlarmTypeFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvAlarmType.performClick();
+                sAlarmType.performClick();
             }
         });
 
-        tvAlarmType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sAlarmType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if (tvAlarmType.getSelectedItemPosition() == 1) {
-                    lvolumeFragment.setVisibility(View.INVISIBLE);
+                if (sAlarmType.getSelectedItemPosition() == 1) {
+                    lvolumeFragment.setVisibility(View.GONE);
                 } else {
                     lvolumeFragment.setVisibility(View.VISIBLE);
                 }
@@ -124,7 +140,7 @@ public class AlarmDetailActivity extends Activity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                tvAlarmType.setSelection(0);
+                sAlarmType.setSelection(0);
             }
 
         });
@@ -184,17 +200,11 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private Boolean getRepeatWeekly() {
-        if (tvRepeatWeekly.getSelectedItem().equals("never")) {
-            return false;
-        } else if (tvRepeatWeekly.getSelectedItem().equals("always")) {
-            return true;
-        } else {
-            return false;
-        }
+        return sRepeatWeekly.isChecked();
     }
 
-    private String getAlarmType() {
-        return tvAlarmType.getSelectedItem().toString();
+    private int getAlarmType() {
+        return sAlarmType.getSelectedItemPosition();
     }
 
     private int getVolume() {
@@ -206,11 +216,11 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private Boolean getSnooze() {
-        return sSnooze.isSelected();
+        return sSnooze.isChecked();
     }
 
     private Boolean getSmartAlarm() {
-        return sSmartAlarm.isSelected();
+        return sSmartAlarm.isChecked();
     }
 
     private int getHour(){return 10;}
