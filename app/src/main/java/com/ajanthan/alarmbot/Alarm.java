@@ -1,7 +1,5 @@
 package com.ajanthan.alarmbot;
 
-import java.util.ArrayList;
-
 /**
  * Created by ajanthan on 15-11-04.
  */

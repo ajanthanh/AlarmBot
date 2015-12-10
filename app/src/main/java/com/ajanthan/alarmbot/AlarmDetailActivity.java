@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -174,7 +173,6 @@ public class AlarmDetailActivity extends Activity {
                     mAlarm.setTone(getTone());
                     mAlarm.setSnooze(getSnooze());
                     mAlarm.setSmartAlarm(getSmartAlarm());
-                    Log.e("kool", mAlarm.toString());
                 }
                 mRealm.commitTransaction();
                 finish();
@@ -190,12 +188,10 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private Boolean[] getActiveDays() {
-        Log.e("Blahblah", "getActiveDays");
         Boolean[] activeDays = new Boolean[7];
         for (int i = 0; i < bActiveDays.size(); i++) {
             activeDays[i]=bActiveDays.get(i).isChecked();
         }
-        Log.e("Blahblah",activeDays.toString());
         return activeDays;
     }
 
@@ -227,15 +223,12 @@ public class AlarmDetailActivity extends Activity {
     private int getMinute(){return 10;}
 
     private String getActiveDaysAsString(Boolean[] activeDays) {
-        Log.e("Blahblah","getActiveDaysAsString");
         String day = "";
         for (int j = 0; j < activeDays.length; j++) {
-            Log.e("stacraft", j + "");
             if (activeDays[j]) {
                 day += getDay(j) + " ";
             }
         }
-        Log.e("Blahblah2",day);
         return day;
 
     }

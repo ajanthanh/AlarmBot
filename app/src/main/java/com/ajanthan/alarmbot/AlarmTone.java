@@ -1,10 +1,5 @@
 package com.ajanthan.alarmbot;
 
-import android.media.Ringtone;
-import android.util.Log;
-
-import java.util.ArrayList;
-
 //import io.realm.RealmObject;
 
 /**

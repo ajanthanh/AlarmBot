@@ -3,7 +3,6 @@ package com.ajanthan.alarmbot;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         }
         mContext = context;
         mRealm = realm;
-        Log.e("Pollo","OnCreate");
     }
 
     @Override
@@ -57,7 +55,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         holder.tvAmPmFragment.setText(alarm.getAmPm());
         holder.sActiveFragment.setChecked(alarm.getState());
         holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDays());
-        Log.e("Pollo", alarm.getActiveDays() + " || " + position);
     }
 
     @Override
@@ -95,7 +92,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             Toast.makeText(mContext, "Alarm Clicked: " + this.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(mContext, AlarmDetailActivity.class);
             i.putExtra("cmd", "edit");
-            i.putExtra("key",mAlarms.get(getAdapterPosition()).getKey());
+            i.putExtra("key", mAlarms.get(getAdapterPosition()).getKey());
             mContext.startActivity(i);
 
         }
@@ -107,13 +104,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
                     mRealm.beginTransaction();
                     if (mAlarms.get(getAdapterPosition()).getState()) {
                         mAlarms.get(getAdapterPosition()).setState(false);
-                        Log.e("Pollo", "setFalse");
                     } else {
                         mAlarms.get(getAdapterPosition()).setState(true);
-                        Log.e("Pollo", "setTrue");
                     }
                     mRealm.commitTransaction();
-                    Log.e("Pollo", mAlarms.get(getAdapterPosition()).getState() + " | " + getAdapterPosition());
                     notifyDataSetChanged();
                 }
             });

@@ -7,7 +7,6 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -40,7 +39,6 @@ public class AlarmToneActivity extends Activity {
         editor.putString("currentAlarmToneName", alarmTone.getName());
         editor.putString("currentAlarmToneUri", alarmTone.getUri());
         editor.commit();
-        Log.e("this","2: "+ alarmTone.getName());
 
         super.onPause();
     }

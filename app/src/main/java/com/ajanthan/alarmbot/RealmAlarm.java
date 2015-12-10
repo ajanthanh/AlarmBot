@@ -1,7 +1,5 @@
 package com.ajanthan.alarmbot;
 
-import android.util.Log;
-
 import java.io.Serializable;
 
 import io.realm.RealmObject;
@@ -42,7 +40,6 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         this.tone = "Default";
         this.snooze = false;
         this.smartAlarm = false;
-        Log.e("Pollo", "Default Constructor Called");
         this.key=System.currentTimeMillis();
 
     }
