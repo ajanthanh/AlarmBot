@@ -1,4 +1,4 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Activity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -7,6 +7,10 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.ajanthan.alarmbot.Objects.AlarmTone;
+import com.ajanthan.alarmbot.Adapter.AlarmToneAdapter;
+import com.ajanthan.alarmbot.R;
 
 import java.util.ArrayList;
 

@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+import com.ajanthan.alarmbot.Activity.MainActivity;
+
 public class AlertReceiver extends BroadcastReceiver{
 
     // Called when a broadcast is made targeting this class

@@ -1,4 +1,4 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +13,10 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.ajanthan.alarmbot.Objects.Alarm;
+import com.ajanthan.alarmbot.R;
+import com.ajanthan.alarmbot.Objects.RealmAlarm;
 
 import java.util.ArrayList;
 

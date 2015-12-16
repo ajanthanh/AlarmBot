@@ -1,4 +1,4 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.ajanthan.alarmbot.PagerAdapter;
+import com.ajanthan.alarmbot.Adapter.PagerAdapter;
 import com.ajanthan.alarmbot.R;
 
 

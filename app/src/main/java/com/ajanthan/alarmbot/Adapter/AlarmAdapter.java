@@ -1,4 +1,4 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.ajanthan.alarmbot.Activity.AlarmDetailActivity;
+import com.ajanthan.alarmbot.Objects.Alarm;
+import com.ajanthan.alarmbot.R;
+import com.ajanthan.alarmbot.Objects.RealmAlarm;
 
 import java.util.ArrayList;
 

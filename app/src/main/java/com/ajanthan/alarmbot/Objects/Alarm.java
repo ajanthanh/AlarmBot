@@ -1,4 +1,4 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Objects;
 
 /**
  * Created by ajanthan on 15-11-04.

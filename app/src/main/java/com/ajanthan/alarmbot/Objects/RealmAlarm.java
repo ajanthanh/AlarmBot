@@ -1,4 +1,6 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Objects;
+
+import com.ajanthan.alarmbot.Objects.Alarm;
 
 import java.io.Serializable;
 

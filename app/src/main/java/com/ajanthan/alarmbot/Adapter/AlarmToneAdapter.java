@@ -1,21 +1,18 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Adapter;
 
-import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.RadioButton;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.ajanthan.alarmbot.Objects.AlarmTone;
+import com.ajanthan.alarmbot.R;
 
 import java.util.ArrayList;
 

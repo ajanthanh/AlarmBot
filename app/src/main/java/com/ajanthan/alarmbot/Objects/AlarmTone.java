@@ -1,4 +1,4 @@
-package com.ajanthan.alarmbot;
+package com.ajanthan.alarmbot.Objects;
 
 //import io.realm.RealmObject;
 
