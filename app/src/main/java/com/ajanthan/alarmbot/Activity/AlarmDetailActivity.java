@@ -12,13 +12,16 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.ajanthan.alarmbot.AlarmHelper;
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.R;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -81,14 +84,14 @@ public class AlarmDetailActivity extends Activity {
                     .equalTo("key", getIntent().getLongExtra("key", 0))
                     .findAll();
             mAlarm=result.get(0);
-            setDetailActivityField();
+            setDetailActivityFields();
         }
         setCustomToolBarListeners();
         setFeildOnClickListener();
 
     }
 
-    private void setDetailActivityField() {
+    private void setDetailActivityFields() {
         sRepeatWeekly.setChecked(true);
         sAlarmType.setSelection(mAlarm.getAlarmType());
         tvTone.setText(mAlarm.getTone());
@@ -167,6 +170,7 @@ public class AlarmDetailActivity extends Activity {
                     alarm = new RealmAlarm(getHour(), getMinute(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
                             getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
                     mRealm.copyToRealm(alarm);
+                    mAlarm=alarm;
                 } else {
                     mAlarm.setHour(getHour());
                     mAlarm.setMinute(getMinute());
@@ -179,6 +183,10 @@ public class AlarmDetailActivity extends Activity {
                     mAlarm.setSmartAlarm(getSmartAlarm());
                 }
                 mRealm.commitTransaction();
+
+                AlarmHelper alarmHelper = new AlarmHelper(mAlarm);
+                Toast.makeText(AlarmDetailActivity.this, alarmHelper.getTimeUntilNextAlarmMessage(), Toast.LENGTH_LONG).show();
+
                 finish();
 
             }
@@ -196,7 +204,28 @@ public class AlarmDetailActivity extends Activity {
         for (int i = 0; i < bActiveDays.size(); i++) {
             activeDays[i]=bActiveDays.get(i).isChecked();
         }
+        if(areAllFalse(activeDays)){
+            Calendar alarmTime = Calendar.getInstance();
+
+            alarmTime.set(Calendar.HOUR_OF_DAY,getHour());
+            alarmTime.set(Calendar.MINUTE,getMinute());
+            alarmTime.set(Calendar.SECOND,0);
+            alarmTime.set(Calendar.AM_PM,(getHour()<12)?Calendar.AM:Calendar.PM);
+
+            if(alarmTime.before(Calendar.getInstance())){
+                activeDays[alarmTime.get(Calendar.DAY_OF_WEEK)]=true;
+            }else{
+                activeDays[alarmTime.get(Calendar.DAY_OF_WEEK)-1]=true;
+            }
+
+        }
         return activeDays;
+    }
+
+    public Boolean areAllFalse(Boolean[] array)
+    {
+        for(boolean b : array) if(b) return false;
+        return true;
     }
 
     private Boolean getRepeatWeekly() {

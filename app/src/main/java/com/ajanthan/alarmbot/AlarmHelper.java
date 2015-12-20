@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.ajanthan.alarmbot.Objects.Alarm;
 
@@ -13,13 +14,15 @@ import java.util.Calendar;
 /**
  * Created by ajanthan on 15-12-19.
  */
+
 public class AlarmHelper {
 
     private final Alarm alarm;
 
-    AlarmHelper(Alarm alarm){
+    public AlarmHelper(Alarm alarm){
         this.alarm=alarm;
     }
+
 //    Return Calendar of set to the next active alarm time and date
 
     public Calendar getAlarmTime(){
@@ -28,7 +31,10 @@ public class AlarmHelper {
         if (alarmTime.before(Calendar.getInstance()))
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
 
-        for (int i = alarmTime.get(Calendar.DAY_OF_WEEK) - 1; activeDays[i] == false && i < 7; i++) {
+//        Log.e("Alarm",alarmTime.get(Calendar.DAY_OF_WEEK)+"");
+
+        for (int i = alarmTime.get(Calendar.DAY_OF_WEEK) - 1;i < 7 && activeDays[i] == false; i++) {
+            Log.e("Alarm",alarmTime.get(Calendar.DAY_OF_WEEK)+" | "+i);
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
             if (i == 6 && alarm.getRepeatWeekly()) {
                 for (int j = 0; activeDays[j] == false && j < 7; j++) {
@@ -75,10 +81,6 @@ public class AlarmHelper {
         }
         return alert;
     }
-
-
-
-
 
 //    Returns true if there is a possible active alarm, and false if alarm has expired
 
@@ -144,8 +146,5 @@ public class AlarmHelper {
 
         return activeDays;
     }
-
-
-
 
 }

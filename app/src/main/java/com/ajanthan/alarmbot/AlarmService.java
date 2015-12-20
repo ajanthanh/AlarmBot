@@ -50,7 +50,7 @@ public class AlarmService extends Service {
         });
 
         List<Alarm> alarms = new ArrayList<Alarm>();
-        Realm realm= Realm.getInstance(getApplicationContext());call
+        Realm realm= Realm.getInstance(getApplicationContext());
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .findAll();
         for(int i =0; i<result.size();i++){
