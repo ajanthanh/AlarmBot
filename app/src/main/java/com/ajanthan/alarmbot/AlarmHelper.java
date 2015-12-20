@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.ajanthan.alarmbot.Objects.Alarm;
+import com.ajanthan.alarmbot.Objects.RealmAlarm;
 
 import java.util.Arrays;
 import java.util.Calendar;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by ajanthan on 15-12-19.
@@ -46,7 +50,7 @@ public class AlarmHelper {
     }
 
     public void schedule(Context context){
-        Intent i = new Intent(context,AlertAlertBroadcastReciever.class);
+        Intent i = new Intent(context,AlarmServiceBroadcastReciever.class);
         i.putExtra("alarm", alarm.getKey());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -125,7 +129,7 @@ public class AlarmHelper {
         alarmTime.set(Calendar.HOUR_OF_DAY,alarm.getHour());
         alarmTime.set(Calendar.MINUTE,alarm.getMinute());
         alarmTime.set(Calendar.SECOND,0);
-        alarmTime.set(Calendar.AM_PM,(alarm.getAmPm()=="PM")?Calendar.PM:Calendar.AM);
+        alarmTime.set(Calendar.AM_PM, (alarm.getAmPm() == "PM") ? Calendar.PM : Calendar.AM);
 
         return alarmTime;
 
@@ -145,6 +149,14 @@ public class AlarmHelper {
         if(activeDaysAsString.contains("SAT")) activeDays[6]=true;
 
         return activeDays;
+    }
+
+    public Alarm getAlarm(long key, Context context){
+        Realm realm= Realm.getInstance(context);
+        RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
+                .equalTo("key", key)
+                .findAll();
+        return result.get(0);
     }
 
 }

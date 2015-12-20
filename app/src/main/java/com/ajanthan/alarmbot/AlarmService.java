@@ -76,7 +76,7 @@ public class AlarmService extends Service {
             alarmHelper.schedule(getApplicationContext());
         }
         else{
-            Intent i = new Intent(getApplicationContext(), AlertAlertBroadcastReciever.class);
+            Intent i = new Intent(getApplicationContext(), AlarmServiceBroadcastReciever.class);
             i.putExtra("alarm",alarm.getKey());
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,i,PendingIntent.FLAG_CANCEL_CURRENT);

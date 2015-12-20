@@ -92,7 +92,7 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private void setDetailActivityFields() {
-        sRepeatWeekly.setChecked(true);
+        sRepeatWeekly.setChecked(mAlarm.getRepeatWeekly());
         sAlarmType.setSelection(mAlarm.getAlarmType());
         tvTone.setText(mAlarm.getTone());
         sVolume.setProgress(mAlarm.getVolume());
