@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.ajanthan.alarmbot.AlarmHelper;
+import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.R;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
@@ -170,7 +171,7 @@ public class AlarmDetailActivity extends Activity {
                     alarm = new RealmAlarm(getHour(), getMinute(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
                             getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
                     mRealm.copyToRealm(alarm);
-                    mAlarm=alarm;
+                    mAlarm = alarm;
                 } else {
                     mAlarm.setHour(getHour());
                     mAlarm.setMinute(getMinute());
@@ -186,7 +187,7 @@ public class AlarmDetailActivity extends Activity {
 
                 AlarmHelper alarmHelper = new AlarmHelper(mAlarm);
                 Toast.makeText(AlarmDetailActivity.this, alarmHelper.getTimeUntilNextAlarmMessage(), Toast.LENGTH_LONG).show();
-
+                callAlarmScheduleService();
                 finish();
 
             }
@@ -197,6 +198,11 @@ public class AlarmDetailActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    private void callAlarmScheduleService() {
+        Intent i = new Intent(this, AlarmServiceBroadcastReciever.class);
+        sendBroadcast(i,null);
     }
 
     private Boolean[] getActiveDays() {
@@ -252,8 +258,8 @@ public class AlarmDetailActivity extends Activity {
         return sSmartAlarm.isChecked();
     }
 
-    private int getHour(){return 10;}
-    private int getMinute(){return 10;}
+    private int getHour(){return 0;}
+    private int getMinute(){return 12;}
 
     private String getActiveDaysAsString(Boolean[] activeDays) {
         String day = "";

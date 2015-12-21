@@ -50,7 +50,7 @@ public class AlarmHelper {
     }
 
     public void schedule(Context context){
-        Intent i = new Intent(context,AlarmServiceBroadcastReciever.class);
+        Intent i = new Intent(context,AlarmAlertBroadcastReciever.class);
         i.putExtra("alarm", alarm.getKey());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);

@@ -22,6 +22,22 @@
         </activity>
         <activity android:name=".Activity.AlarmDetailActivity"></activity>
         <activity android:name=".Activity.AlarmToneActivity"></activity>
+        <activity android:name=".Activity.AlarmAlertActivity"></activity>
+
+        <service android:name=".AlarmService"
+            android:process="com.ajanthan.alarmbot.serviceProcess">
+
+        </service>
+
+        <receiver android:name=".AlarmServiceBroadcastReciever">
+            <intent-filter>
+                <action android:name="ANDROID.INTENT.ACTION.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".AlarmAlertBroadcastReciever"></receiver>
+
+
     </application>
 
 </manifest>

@@ -4,7 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.ajanthan.alarmbot.Activity.AlarmAlertActivity;
 import com.ajanthan.alarmbot.Objects.Alarm;
 
 /**
@@ -17,11 +19,11 @@ public class AlarmAlertBroadcastReciever extends BroadcastReceiver {
         Intent i = new Intent(context,AlarmServiceBroadcastReciever.class);
         context.sendBroadcast(i, null);
 
-        StaticWakeLock.lockOn(context);
         Bundle bundle = intent.getExtras();
 
         AlarmHelper alarmHelper= new AlarmHelper(null);
         final Alarm alarm = alarmHelper.getAlarm(bundle.getLong("alarm"),context);
+        Log.e("AlarmTester", "test");
 
         Intent alarmAlertActivityIntent = new Intent(context,AlarmAlertActivity.class);
 

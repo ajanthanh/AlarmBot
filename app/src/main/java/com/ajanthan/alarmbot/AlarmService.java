@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
@@ -72,11 +73,13 @@ public class AlarmService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Alarm alarm = getNext();
         AlarmHelper alarmHelper = new AlarmHelper(alarm);
+        Log.e("AlarmTester", alarm.getHour()+":"+alarm.getMinute());
         if (alarm!=null){
             alarmHelper.schedule(getApplicationContext());
+
         }
         else{
-            Intent i = new Intent(getApplicationContext(), AlarmServiceBroadcastReciever.class);
+            Intent i = new Intent(getApplicationContext(), AlarmAlertBroadcastReciever.class);
             i.putExtra("alarm",alarm.getKey());
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,i,PendingIntent.FLAG_CANCEL_CURRENT);
