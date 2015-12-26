@@ -185,8 +185,10 @@ public class AlarmDetailActivity extends Activity {
                 }
                 mRealm.commitTransaction();
 
-                AlarmHelper alarmHelper = new AlarmHelper(mAlarm);
-                Toast.makeText(AlarmDetailActivity.this, alarmHelper.getTimeUntilNextAlarmMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(AlarmDetailActivity.this,
+                        AlarmHelper.getTimeUntilNextAlarmMessage(mAlarm.getHour(),mAlarm.getMinute(),mAlarm.getAmPm(),mAlarm.getRepeatWeekly(),mAlarm.getActiveDays()),
+                        Toast.LENGTH_LONG).show();
+
                 callAlarmScheduleService();
                 finish();
 
@@ -259,7 +261,8 @@ public class AlarmDetailActivity extends Activity {
     }
 
     private int getHour(){return 0;}
-    private int getMinute(){return 12;}
+
+    private int getMinute(){return 21;}
 
     private String getActiveDaysAsString(Boolean[] activeDays) {
         String day = "";

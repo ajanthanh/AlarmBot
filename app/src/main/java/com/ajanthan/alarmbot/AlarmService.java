@@ -35,10 +35,9 @@ public class AlarmService extends Service {
         Set<Alarm> alarmQueue = new TreeSet<>(new Comparator<Alarm>() {
             @Override
             public int compare(Alarm lhs, Alarm rhs) {
-                AlarmHelper lAlarmHelper= new AlarmHelper(lhs);
-                AlarmHelper rAlarmHelper= new AlarmHelper(rhs);
 
-                long diff = lAlarmHelper.getAlarmTime().getTimeInMillis() - rAlarmHelper.getAlarmTime().getTimeInMillis();
+                long diff = AlarmHelper.getAlarmTime(lhs.getHour(),lhs.getMinute(),lhs.getAmPm(),lhs.getRepeatWeekly(),lhs.getActiveDays()).getTimeInMillis() -
+                        AlarmHelper.getAlarmTime(rhs.getHour(),rhs.getMinute(),rhs.getAmPm(),rhs.getRepeatWeekly(),rhs.getActiveDays()).getTimeInMillis();
                 if(diff>0){
                     return 1;
                 }else if (diff < 0){
@@ -72,10 +71,9 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Alarm alarm = getNext();
-        AlarmHelper alarmHelper = new AlarmHelper(alarm);
         Log.e("AlarmTester", alarm.getHour()+":"+alarm.getMinute());
         if (alarm!=null){
-            alarmHelper.schedule(getApplicationContext());
+            AlarmHelper.schedule(getApplicationContext(),alarm.getKey());
 
         }
         else{

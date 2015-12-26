@@ -21,8 +21,7 @@ public class AlarmAlertBroadcastReciever extends BroadcastReceiver {
 
         Bundle bundle = intent.getExtras();
 
-        AlarmHelper alarmHelper= new AlarmHelper(null);
-        final Alarm alarm = alarmHelper.getAlarm(bundle.getLong("alarm"),context);
+        final Alarm alarm = AlarmHelper.getAlarm(bundle.getLong("alarm"),context);
         Log.e("AlarmTester", "test");
 
         Intent alarmAlertActivityIntent = new Intent(context,AlarmAlertActivity.class);

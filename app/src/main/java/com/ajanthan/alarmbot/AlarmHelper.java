@@ -21,26 +21,20 @@ import io.realm.RealmResults;
 
 public class AlarmHelper {
 
-    private final Alarm alarm;
-
-    public AlarmHelper(Alarm alarm){
-        this.alarm=alarm;
-    }
-
 //    Return Calendar of set to the next active alarm time and date
 
-    public Calendar getAlarmTime(){
-        Calendar alarmTime = getCalendarAlarmTime();
-        Boolean[] activeDays=getActiveDays();
+    static public Calendar getAlarmTime(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
+        Calendar alarmTime = getCalendarAlarmTime(hour, minute, amPm);
+        Boolean[] activeDays = getActiveDays(activeDaysString);
         if (alarmTime.before(Calendar.getInstance()))
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
 
 //        Log.e("Alarm",alarmTime.get(Calendar.DAY_OF_WEEK)+"");
 
-        for (int i = alarmTime.get(Calendar.DAY_OF_WEEK) - 1;i < 7 && activeDays[i] == false; i++) {
-            Log.e("Alarm",alarmTime.get(Calendar.DAY_OF_WEEK)+" | "+i);
+        for (int i = alarmTime.get(Calendar.DAY_OF_WEEK) - 1; i < 7 && activeDays[i] == false; i++) {
+            Log.e("Alarm", alarmTime.get(Calendar.DAY_OF_WEEK) + " | " + i);
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
-            if (i == 6 && alarm.getRepeatWeekly()) {
+            if (i == 6 && repeatWeekly) {
                 for (int j = 0; activeDays[j] == false && j < 7; j++) {
                     alarmTime.add(Calendar.DAY_OF_MONTH, 1);
                 }
@@ -49,18 +43,21 @@ public class AlarmHelper {
         return alarmTime;
     }
 
-    public void schedule(Context context){
-        Intent i = new Intent(context,AlarmAlertBroadcastReciever.class);
-        i.putExtra("alarm", alarm.getKey());
+    static public void schedule(Context context, long key) {
+        Intent i = new Intent(context, AlarmAlertBroadcastReciever.class);
+        i.putExtra("alarm", key);
+
+        Alarm alarm = getAlarm(key,context);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
-        AlarmManager alarmManager=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP,getAlarmTime().getTimeInMillis(),pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(
+                alarm.getHour(),alarm.getMinute(),alarm.getAmPm(),alarm.getRepeatWeekly(),alarm.getActiveDays()).getTimeInMillis(), pendingIntent);
     }
 
-    public String getTimeUntilNextAlarmMessage(){
-        long timeDifference = getAlarmTime().getTimeInMillis() - System.currentTimeMillis();
+    static public String getTimeUntilNextAlarmMessage(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
+        long timeDifference = getAlarmTime(hour, minute, amPm, repeatWeekly, activeDaysString).getTimeInMillis() - System.currentTimeMillis();
         long days = timeDifference / (1000 * 60 * 60 * 24);
         long hours = timeDifference / (1000 * 60 * 60) - (days * 24);
         long minutes = timeDifference / (1000 * 60) - (days * 24 * 60) - (hours * 60);
@@ -88,32 +85,29 @@ public class AlarmHelper {
 
 //    Returns true if there is a possible active alarm, and false if alarm has expired
 
-    public Boolean isAlarmValid(){
-        if (alarm.getRepeatWeekly()){
+    static public Boolean isAlarmValid(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
+        if (repeatWeekly) {
             return true;
-        }
-        else{
-            Boolean[] activeDays=getActiveDays();
-            int lastDayOfWeek=0;
+        } else {
+            Boolean[] activeDays = getActiveDays(activeDaysString);
+            Calendar alarmTime = getCalendarAlarmTime(hour, minute, amPm);
+            int lastDayOfWeek = 0;
 
-            for(int i=0;i<7;i++){
-                if (activeDays[i]){
-                    lastDayOfWeek=i;
+            for (int i = 0; i < 7; i++) {
+                if (activeDays[i]) {
+                    lastDayOfWeek = i;
                 }
             }
-            if (getCalendarAlarmTime().get(Calendar.DAY_OF_WEEK)<lastDayOfWeek+1){
+            if (alarmTime.get(Calendar.DAY_OF_WEEK) < lastDayOfWeek + 1) {
                 return true;
-            }
-            else if (getCalendarAlarmTime().get(Calendar.DAY_OF_WEEK)==lastDayOfWeek+1){
-                if (getCalendarAlarmTime().get(Calendar.HOUR_OF_DAY)< Calendar.getInstance().get(Calendar.HOUR_OF_DAY)){
+            } else if (alarmTime.get(Calendar.DAY_OF_WEEK) == lastDayOfWeek + 1) {
+                if (alarmTime.get(Calendar.HOUR_OF_DAY) < Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
                     return true;
-                }
-                else if (getCalendarAlarmTime().get(Calendar.HOUR_OF_DAY)==Calendar.getInstance().get(Calendar.HOUR_OF_DAY)){
-                    if (getCalendarAlarmTime().get(Calendar.MINUTE)< Calendar.getInstance().get(Calendar.MINUTE)){
+                } else if (alarmTime.get(Calendar.HOUR_OF_DAY) == Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+                    if (alarmTime.get(Calendar.MINUTE) < Calendar.getInstance().get(Calendar.MINUTE)) {
                         return true;
-                    }
-                    else if (getCalendarAlarmTime().get(Calendar.MINUTE)==Calendar.getInstance().get(Calendar.MINUTE)){
-                        if (getCalendarAlarmTime().get(Calendar.SECOND)< Calendar.getInstance().get(Calendar.SECOND)){
+                    } else if (alarmTime.get(Calendar.MINUTE) == Calendar.getInstance().get(Calendar.MINUTE)) {
+                        if (alarmTime.get(Calendar.SECOND) < Calendar.getInstance().get(Calendar.SECOND)) {
                             return true;
                         }
                     }
@@ -123,36 +117,36 @@ public class AlarmHelper {
         }
     }
 
-    private Calendar getCalendarAlarmTime(){
+    static private Calendar getCalendarAlarmTime(int hour, int minute, String amPm) {
         Calendar alarmTime = Calendar.getInstance();
 
-        alarmTime.set(Calendar.HOUR_OF_DAY,alarm.getHour());
-        alarmTime.set(Calendar.MINUTE,alarm.getMinute());
-        alarmTime.set(Calendar.SECOND,0);
-        alarmTime.set(Calendar.AM_PM, (alarm.getAmPm() == "PM") ? Calendar.PM : Calendar.AM);
+        alarmTime.set(Calendar.HOUR_OF_DAY, hour);
+        alarmTime.set(Calendar.MINUTE, minute);
+        alarmTime.set(Calendar.SECOND, 0);
+        alarmTime.set(Calendar.AM_PM, (amPm == "PM") ? Calendar.PM : Calendar.AM);
 
         return alarmTime;
 
     }
 
-    private Boolean[] getActiveDays(){
-        String activeDaysAsString=alarm.getActiveDays();
+    static private Boolean[] getActiveDays(String activeDaysString) {
+        String activeDaysAsString = activeDaysString;
         Boolean[] activeDays = new Boolean[7];
         Arrays.fill(activeDays, Boolean.FALSE);
 
-        if(activeDaysAsString.contains("SUN")) activeDays[0]=true;
-        if(activeDaysAsString.contains("MON")) activeDays[1]=true;
-        if(activeDaysAsString.contains("TUE")) activeDays[2]=true;
-        if(activeDaysAsString.contains("WED")) activeDays[3]=true;
-        if(activeDaysAsString.contains("THU")) activeDays[4]=true;
-        if(activeDaysAsString.contains("FRI")) activeDays[5]=true;
-        if(activeDaysAsString.contains("SAT")) activeDays[6]=true;
+        if (activeDaysAsString.contains("SUN")) activeDays[0] = true;
+        if (activeDaysAsString.contains("MON")) activeDays[1] = true;
+        if (activeDaysAsString.contains("TUE")) activeDays[2] = true;
+        if (activeDaysAsString.contains("WED")) activeDays[3] = true;
+        if (activeDaysAsString.contains("THU")) activeDays[4] = true;
+        if (activeDaysAsString.contains("FRI")) activeDays[5] = true;
+        if (activeDaysAsString.contains("SAT")) activeDays[6] = true;
 
         return activeDays;
     }
 
-    public Alarm getAlarm(long key, Context context){
-        Realm realm= Realm.getInstance(context);
+    static public Alarm getAlarm(long key, Context context) {
+        Realm realm = Realm.getInstance(context);
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .equalTo("key", key)
                 .findAll();
