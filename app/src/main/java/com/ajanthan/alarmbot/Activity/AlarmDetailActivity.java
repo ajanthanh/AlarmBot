@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -49,6 +50,8 @@ public class AlarmDetailActivity extends Activity {
     private SeekBar sVolume;
     private Switch sSnooze;
     private Switch sSmartAlarm;
+    private EditText etHour;
+    private EditText etMinute;
     private ArrayList<ToggleButton> bActiveDays;
 
     @Override
@@ -70,6 +73,9 @@ public class AlarmDetailActivity extends Activity {
         sVolume = (SeekBar) findViewById(R.id.volume);
         sSnooze = (Switch) findViewById(R.id.snooze);
         sSmartAlarm = (Switch) findViewById(R.id.smartAlarm);
+        etHour = (EditText) findViewById(R.id.hour);
+        etMinute = (EditText) findViewById(R.id.minute);
+
         bActiveDays = new ArrayList<ToggleButton>();
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySunday));
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDayMonday));
@@ -99,6 +105,8 @@ public class AlarmDetailActivity extends Activity {
         sVolume.setProgress(mAlarm.getVolume());
         sSnooze.setChecked(mAlarm.getSnooze());
         sSmartAlarm.setChecked(mAlarm.getSmartAlarm());
+        etHour.setText(String.valueOf(mAlarm.getHour()));
+        etMinute.setText(String.valueOf(mAlarm.getMinute()));
 
         if(mAlarm.getActiveDays().contains("SUN")) bActiveDays.get(0).setChecked(true);
         if(mAlarm.getActiveDays().contains("MON")) bActiveDays.get(1).setChecked(true);
@@ -258,11 +266,11 @@ public class AlarmDetailActivity extends Activity {
 
     private Boolean getSmartAlarm() {
         return sSmartAlarm.isChecked();
+
     }
+    private int getHour(){return Integer.parseInt(etHour.getText().toString());}
 
-    private int getHour(){return 0;}
-
-    private int getMinute(){return 21;}
+    private int getMinute(){return Integer.parseInt(etMinute.getText().toString());}
 
     private String getActiveDaysAsString(Boolean[] activeDays) {
         String day = "";
