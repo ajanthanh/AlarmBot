@@ -73,18 +73,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     }
 
     public void update(ArrayList<Alarm> alarms) {
-        mAlarms=alarms;
+        mAlarms = alarms;
         notifyDataSetChanged();
-
-        Realm realm= Realm.getDefaultInstance();
-        RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
-                .findAll();
-        for(int i =0; i<result.size();i++){
-            Log.e("AlarmTester2", alarms.get(i).getHour() + ":" + alarms.get(i).getMinute());
-        }
         mRealm.close();
     }
-
 
 
     class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -116,7 +108,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
         }
 
-        private void setOnChangeStateListener(){
+        private void setOnChangeStateListener() {
             sActiveFragment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

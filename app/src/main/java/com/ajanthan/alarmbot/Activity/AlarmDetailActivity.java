@@ -85,12 +85,12 @@ public class AlarmDetailActivity extends Activity {
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDayFriday));
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySaturday));
 
-        mRealm= Realm.getDefaultInstance();
-        if(getIntent().getStringExtra("cmd").equals("edit")){
+        mRealm = Realm.getDefaultInstance();
+        if (getIntent().getStringExtra("cmd").equals("edit")) {
             RealmResults<RealmAlarm> result = mRealm.where(RealmAlarm.class)
                     .equalTo("key", getIntent().getLongExtra("key", 0))
                     .findAll();
-            mAlarm=result.get(0);
+            mAlarm = result.get(0);
             setDetailActivityFields();
         }
         mRealm.close();
@@ -109,13 +109,13 @@ public class AlarmDetailActivity extends Activity {
         etHour.setText(String.valueOf(mAlarm.getHour()));
         etMinute.setText(String.valueOf(mAlarm.getMinute()));
 
-        if(mAlarm.getActiveDays().contains("SUN")) bActiveDays.get(0).setChecked(true);
-        if(mAlarm.getActiveDays().contains("MON")) bActiveDays.get(1).setChecked(true);
-        if(mAlarm.getActiveDays().contains("TUE")) bActiveDays.get(2).setChecked(true);
-        if(mAlarm.getActiveDays().contains("WED")) bActiveDays.get(3).setChecked(true);
-        if(mAlarm.getActiveDays().contains("THU")) bActiveDays.get(4).setChecked(true);
-        if(mAlarm.getActiveDays().contains("FRI")) bActiveDays.get(5).setChecked(true);
-        if(mAlarm.getActiveDays().contains("SAT")) bActiveDays.get(6).setChecked(true);
+        if (mAlarm.getActiveDays().contains("SUN")) bActiveDays.get(0).setChecked(true);
+        if (mAlarm.getActiveDays().contains("MON")) bActiveDays.get(1).setChecked(true);
+        if (mAlarm.getActiveDays().contains("TUE")) bActiveDays.get(2).setChecked(true);
+        if (mAlarm.getActiveDays().contains("WED")) bActiveDays.get(3).setChecked(true);
+        if (mAlarm.getActiveDays().contains("THU")) bActiveDays.get(4).setChecked(true);
+        if (mAlarm.getActiveDays().contains("FRI")) bActiveDays.get(5).setChecked(true);
+        if (mAlarm.getActiveDays().contains("SAT")) bActiveDays.get(6).setChecked(true);
 
     }
 
@@ -123,7 +123,7 @@ public class AlarmDetailActivity extends Activity {
     protected void onStart() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String restoredText = prefs.getString("currentAlarmToneName", "");
-        if(!restoredText.isEmpty()) {
+        if (!restoredText.isEmpty()) {
             tvTone.setText(restoredText);
         }
         super.onStart();
@@ -220,29 +220,28 @@ public class AlarmDetailActivity extends Activity {
     private Boolean[] getActiveDays() {
         Boolean[] activeDays = new Boolean[7];
         for (int i = 0; i < bActiveDays.size(); i++) {
-            activeDays[i]=bActiveDays.get(i).isChecked();
+            activeDays[i] = bActiveDays.get(i).isChecked();
         }
-        if(areAllFalse(activeDays)){
+        if (areAllFalse(activeDays)) {
             Calendar alarmTime = Calendar.getInstance();
 
-            alarmTime.set(Calendar.HOUR_OF_DAY,getHour());
-            alarmTime.set(Calendar.MINUTE,getMinute());
-            alarmTime.set(Calendar.SECOND,0);
-            alarmTime.set(Calendar.AM_PM,(getHour()<12)?Calendar.AM:Calendar.PM);
+            alarmTime.set(Calendar.HOUR_OF_DAY, getHour());
+            alarmTime.set(Calendar.MINUTE, getMinute());
+            alarmTime.set(Calendar.SECOND, 0);
+            alarmTime.set(Calendar.AM_PM, (getHour() < 12) ? Calendar.AM : Calendar.PM);
 
-            if(alarmTime.before(Calendar.getInstance())){
-                activeDays[alarmTime.get(Calendar.DAY_OF_WEEK)]=true;
-            }else{
-                activeDays[alarmTime.get(Calendar.DAY_OF_WEEK)-1]=true;
+            if (alarmTime.before(Calendar.getInstance())) {
+                activeDays[alarmTime.get(Calendar.DAY_OF_WEEK)] = true;
+            } else {
+                activeDays[alarmTime.get(Calendar.DAY_OF_WEEK) - 1] = true;
             }
 
         }
         return activeDays;
     }
 
-    public Boolean areAllFalse(Boolean[] array)
-    {
-        for(boolean b : array) if(b) return false;
+    public Boolean areAllFalse(Boolean[] array) {
+        for (boolean b : array) if (b) return false;
         return true;
     }
 
@@ -270,9 +269,14 @@ public class AlarmDetailActivity extends Activity {
         return sSmartAlarm.isChecked();
 
     }
-    private int getHour(){return Integer.parseInt(etHour.getText().toString());}
 
-    private int getMinute(){return Integer.parseInt(etMinute.getText().toString());}
+    private int getHour() {
+        return Integer.parseInt(etHour.getText().toString());
+    }
+
+    private int getMinute() {
+        return Integer.parseInt(etMinute.getText().toString());
+    }
 
     private String getActiveDaysAsString(Boolean[] activeDays) {
         String day = "";
@@ -306,11 +310,10 @@ public class AlarmDetailActivity extends Activity {
     }
 
     public String getAmPm() {
-        int hour=getHour();
-        if (hour == 0 ||hour / 12 == 0) {
+        int hour = getHour();
+        if (hour == 0 || hour / 12 == 0) {
             return "AM";
-        }
-        else{
+        } else {
             return "PM";
         }
     }

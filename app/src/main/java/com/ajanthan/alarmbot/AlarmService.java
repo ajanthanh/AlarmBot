@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
@@ -40,14 +41,14 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Alarm alarm = AlarmHelper.getNext();
-        if (alarm != null&&alarm.getState()==true) {
+        if (alarm != null && alarm.getState() == true) {
             Log.e("AlarmTester", "Current: " + alarm.getHour() + ":" + alarm.getMinute());
             AlarmHelper.schedule(getApplicationContext(), alarm.getKey());
 
         } else {
             Intent i = new Intent(getApplicationContext(), AlarmAlertBroadcastReciever.class);
             i.putExtra("alarm", new RealmAlarm().getKey());
-            Log.e("AlarmTester", "No active Alarms");
+            Toast.makeText(getApplicationContext(), "No Active Alarms", Toast.LENGTH_LONG).show();
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 

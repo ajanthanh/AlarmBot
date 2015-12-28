@@ -3,6 +3,7 @@ package com.ajanthan.alarmbot;
 /**
  * Created by ajanthan on 15-12-15.
  */
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,7 +14,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.ajanthan.alarmbot.Activity.MainActivity;
 
-public class AlertReceiver extends BroadcastReceiver{
+public class AlertReceiver extends BroadcastReceiver {
 
     // Called when a broadcast is made targeting this class
     @Override
@@ -22,7 +23,7 @@ public class AlertReceiver extends BroadcastReceiver{
 
     }
 
-    public void createNotification(Context context, String msg, String msgText, String msgAlert){
+    public void createNotification(Context context, String msg, String msgText, String msgAlert) {
 
         // Define an Intent and an action to perform with it by another application
         PendingIntent notificIntent = PendingIntent.getActivity(context, 0,

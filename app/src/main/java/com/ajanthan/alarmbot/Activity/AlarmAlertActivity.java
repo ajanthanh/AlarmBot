@@ -9,9 +9,7 @@ import com.ajanthan.alarmbot.R;
 /**
  * Created by ajanthan on 15-12-20.
  */
-public class AlarmAlertActivity extends Activity{
-
-    private MediaPlayer mediaPlayer;
+public class AlarmAlertActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

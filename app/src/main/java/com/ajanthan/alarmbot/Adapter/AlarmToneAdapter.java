@@ -70,8 +70,8 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
         return currentAlarmTone;
     }
 
-    public void stopCurrentRingTone(){
-        if(currentRingTone!=null){
+    public void stopCurrentRingTone() {
+        if (currentRingTone != null) {
             currentRingTone.stop();
         }
     }
@@ -92,7 +92,7 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
 
         @Override
         public void onClick(View v) {
-            if (currentAlarmTone!=null){
+            if (currentAlarmTone != null) {
                 currentAlarmTone.setInActive();
             }
             currentAlarmTone = mAlarmTones.get(this.getAdapterPosition());

@@ -29,16 +29,14 @@ public class AlarmHelper {
 //    Return Calendar of set to the next active alarm time and date
 
     static public Calendar getAlarmTime(int hour, int minute, Boolean repeatWeekly, String activeDaysString) {
-        Log.e("AlarmI",hour+": "+minute);
+        Log.e("AlarmI", hour + ": " + minute);
         Calendar alarmTime = getCalendarAlarmTime(hour, minute);
         Boolean[] activeDays = getActiveDays(activeDaysString);
         if (alarmTime.before(Calendar.getInstance())) {
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
-            Log.e("AlarmLess", Calendar.getInstance().toString()+"  ||  "+alarmTime.toString());
         }
 
         for (int i = alarmTime.get(Calendar.DAY_OF_WEEK) - 1; i < 7 && activeDays[i] == false; i++) {
-            Log.e("AlarmMore", alarmTime.get(Calendar.DAY_OF_WEEK) + " | " + i);
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
             if (i == 6 && repeatWeekly) {
                 for (int j = 0; activeDays[j] == false && j < 7; j++) {
@@ -55,13 +53,11 @@ public class AlarmHelper {
 
         Alarm alarm = getAlarm(key, context);
 
-        Log.e("AlarmSc",alarm.getHour()+":"+alarm.getMinute());
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(
-                alarm.getHour(),alarm.getMinute(),alarm.getRepeatWeekly(),alarm.getActiveDays()).getTimeInMillis(), pendingIntent);
+                alarm.getHour(), alarm.getMinute(), alarm.getRepeatWeekly(), alarm.getActiveDays()).getTimeInMillis(), pendingIntent);
     }
 
     static public String getTimeUntilNextAlarmMessage(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
@@ -166,31 +162,25 @@ public class AlarmHelper {
         context.sendBroadcast(mathAlarmServiceIntent, null);
     }
 
-    static public Alarm getNext(){
+    static public Alarm getNext() {
         Set<Alarm> alarmQueue = new TreeSet<>(new Comparator<Alarm>() {
             @Override
             public int compare(Alarm lhs, Alarm rhs) {
-                if(lhs.getState()==false&&rhs.getState()==false){
+                if (lhs.getState() == false && rhs.getState() == false) {
                     return 0;
-                }
-                else if(rhs.getState()==false){
+                } else if (rhs.getState() == false) {
                     return -1; //lhs is closer
-                }
-                else if(lhs.getState()==false){
+                } else if (lhs.getState() == false) {
                     return 1; //rhs is closer
                 }
 
-                Calendar lAlarm =getAlarmTime(lhs.getHour(),lhs.getMinute(),lhs.getRepeatWeekly(),lhs.getActiveDays());
-                Calendar rAlarm=getAlarmTime(rhs.getHour(),rhs.getMinute(),rhs.getRepeatWeekly(),rhs.getActiveDays());
+                Calendar lAlarm = getAlarmTime(lhs.getHour(), lhs.getMinute(), lhs.getRepeatWeekly(), lhs.getActiveDays());
+                Calendar rAlarm = getAlarmTime(rhs.getHour(), rhs.getMinute(), rhs.getRepeatWeekly(), rhs.getActiveDays());
 
                 long diff = lAlarm.getTimeInMillis() - rAlarm.getTimeInMillis();
-                Log.e("AlarmComp", lAlarm.get(Calendar.DAY_OF_MONTH)+" "+lhs.getHour()+":"+lhs.getMinute()+"  verses  "+
-                        rAlarm.get(Calendar.DAY_OF_MONTH)+" "+rhs.getHour()+":"+rhs.getMinute());
-                if(diff>0){
-                    Log.e("AlarmComp", "G"+ lAlarm.get(Calendar.DAY_OF_MONTH)+" "+lhs.getHour()+":"+lhs.getMinute());
+                if (diff > 0) {
                     return 1; //rhs is closer
-                }else if (diff < 0){
-                    Log.e("AlarmComp", "G"+ rAlarm.get(Calendar.DAY_OF_MONTH)+" "+rhs.getHour()+":"+rhs.getMinute());
+                } else if (diff < 0) {
                     return -1; //lhs is closer
                 }
                 return 0;
@@ -199,21 +189,20 @@ public class AlarmHelper {
         });
 
         List<Alarm> alarms = new ArrayList<Alarm>();
-        Realm realm= Realm.getDefaultInstance();
+        Realm realm = Realm.getDefaultInstance();
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .findAll();
 
-        for(int i =0; i<result.size();i++){
+        for (int i = 0; i < result.size(); i++) {
             alarms.add(result.get(i));
-            Log.e("AlarmTester", alarms.get(i).getHour() + ":" + alarms.get(i).getMinute());
         }
-        for(Alarm alarm : alarms){
-            if(alarm.getState())
+        for (Alarm alarm : alarms) {
+            if (alarm.getState())
                 alarmQueue.add(alarm);
         }
-        if(alarmQueue.iterator().hasNext()){
+        if (alarmQueue.iterator().hasNext()) {
             return alarmQueue.iterator().next();
-        }else{
+        } else {
             return null;
         }
 
