@@ -74,7 +74,7 @@ public class TabFragment1 extends Fragment {
 
     private ArrayList<Alarm> fetchAlarms(){
         ArrayList<Alarm> alarms = new ArrayList<Alarm>();
-        Realm realm= Realm.getInstance(getActivity());
+        Realm realm= Realm.getDefaultInstance();
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .findAll();
         for(int i =0; i<result.size();i++){

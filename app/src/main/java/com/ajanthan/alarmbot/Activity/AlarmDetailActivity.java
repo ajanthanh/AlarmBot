@@ -85,7 +85,7 @@ public class AlarmDetailActivity extends Activity {
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDayFriday));
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySaturday));
 
-        mRealm= Realm.getInstance(this);
+        mRealm= Realm.getDefaultInstance();
         if(getIntent().getStringExtra("cmd").equals("edit")){
             RealmResults<RealmAlarm> result = mRealm.where(RealmAlarm.class)
                     .equalTo("key", getIntent().getLongExtra("key", 0))

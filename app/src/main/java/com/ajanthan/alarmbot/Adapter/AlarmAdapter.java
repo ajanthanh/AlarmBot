@@ -76,7 +76,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         mAlarms=alarms;
         notifyDataSetChanged();
 
-        Realm realm= Realm.getInstance(mContext);
+        Realm realm= Realm.getDefaultInstance();
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .findAll();
         for(int i =0; i<result.size();i++){
