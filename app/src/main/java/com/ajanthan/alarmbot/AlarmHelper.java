@@ -11,6 +11,7 @@ import com.ajanthan.alarmbot.Objects.RealmAlarm;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -23,8 +24,8 @@ public class AlarmHelper {
 
 //    Return Calendar of set to the next active alarm time and date
 
-    static public Calendar getAlarmTime(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
-        Log.e("AlarmI",hour+": "+minute+" "+amPm);
+    static public Calendar getAlarmTime(int hour, int minute, Boolean repeatWeekly, String activeDaysString) {
+        Log.e("AlarmI",hour+": "+minute);
         Calendar alarmTime = getCalendarAlarmTime(hour, minute);
         Boolean[] activeDays = getActiveDays(activeDaysString);
         if (alarmTime.before(Calendar.getInstance())) {
@@ -48,17 +49,19 @@ public class AlarmHelper {
         Intent i = new Intent(context, AlarmAlertBroadcastReciever.class);
         i.putExtra("alarm", key);
 
-        Alarm alarm = getAlarm(key,context);
+        Alarm alarm = getAlarm(key, context);
+
+        Log.e("AlarmSc",alarm.getHour()+":"+alarm.getMinute());
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP, getAlarmTime(
-                alarm.getHour(),alarm.getMinute(),alarm.getAmPm(),alarm.getRepeatWeekly(),alarm.getActiveDays()).getTimeInMillis(), pendingIntent);
+                alarm.getHour(),alarm.getMinute(),alarm.getRepeatWeekly(),alarm.getActiveDays()).getTimeInMillis(), pendingIntent);
     }
 
     static public String getTimeUntilNextAlarmMessage(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
-        long timeDifference = getAlarmTime(hour, minute, amPm, repeatWeekly, activeDaysString).getTimeInMillis() - System.currentTimeMillis();
+        long timeDifference = getAlarmTime(hour, minute, repeatWeekly, activeDaysString).getTimeInMillis() - System.currentTimeMillis();
         long days = timeDifference / (1000 * 60 * 60 * 24);
         long hours = timeDifference / (1000 * 60 * 60) - (days * 24);
         long minutes = timeDifference / (1000 * 60) - (days * 24 * 60) - (hours * 60);
@@ -150,7 +153,13 @@ public class AlarmHelper {
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .equalTo("key", key)
                 .findAll();
+        realm.close();
         return result.get(0);
+    }
+
+    static public void callAlarmScheduleService(Context context) {
+        Intent mathAlarmServiceIntent = new Intent(context, AlarmServiceBroadcastReciever.class);
+        context.sendBroadcast(mathAlarmServiceIntent, null);
     }
 
 }

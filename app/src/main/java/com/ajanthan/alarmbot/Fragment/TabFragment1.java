@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.ajanthan.alarmbot.Activity.AlarmDetailActivity;
 import com.ajanthan.alarmbot.Adapter.AlarmAdapter;
+import com.ajanthan.alarmbot.AlarmHelper;
+import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
 import com.ajanthan.alarmbot.R;
@@ -21,6 +23,7 @@ import com.ajanthan.alarmbot.R;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class TabFragment1 extends Fragment {
@@ -36,11 +39,12 @@ public class TabFragment1 extends Fragment {
         View view = inflater.inflate(R.layout.tab_fragment_1, container, false);
         rAlarms = (RecyclerView) view.findViewById(R.id.alarmList);
         ArrayList<Alarm> aAlarms = new ArrayList<Alarm>();
-        mRealm= Realm.getInstance(getActivity());
+        mRealm= Realm.getDefaultInstance();
         adapterAlarm = new AlarmAdapter(getActivity(), fetchAlarms(),mRealm);
         rAlarms.setAdapter(adapterAlarm);
         rAlarms.setLayoutManager(new LinearLayoutManager(getActivity()));
         btnAddAlarm = (ImageButton) view.findViewById(R.id.addAlarm);
+        AlarmHelper.callAlarmScheduleService(getActivity());
         return view;
     }
 
@@ -76,11 +80,14 @@ public class TabFragment1 extends Fragment {
         for(int i =0; i<result.size();i++){
             alarms.add(result.get(i));
         }
+        realm.close();
         return alarms;
     }
 
     private void update(){
         adapterAlarm.update(fetchAlarms());
     }
+
+
 
 }

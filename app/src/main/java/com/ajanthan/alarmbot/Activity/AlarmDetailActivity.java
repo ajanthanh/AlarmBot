@@ -93,6 +93,7 @@ public class AlarmDetailActivity extends Activity {
             mAlarm=result.get(0);
             setDetailActivityFields();
         }
+        mRealm.close();
         setCustomToolBarListeners();
         setFeildOnClickListener();
 

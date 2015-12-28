@@ -3,6 +3,7 @@ package com.ajanthan.alarmbot.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ajanthan.alarmbot.Activity.AlarmDetailActivity;
+import com.ajanthan.alarmbot.AlarmHelper;
 import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
+import com.ajanthan.alarmbot.Fragment.TabFragment1;
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.R;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
@@ -19,6 +22,7 @@ import com.ajanthan.alarmbot.Objects.RealmAlarm;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by ajanthan on 15-11-26.
@@ -71,12 +75,17 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     public void update(ArrayList<Alarm> alarms) {
         mAlarms=alarms;
         notifyDataSetChanged();
+
+        Realm realm= Realm.getInstance(mContext);
+        RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
+                .findAll();
+        for(int i =0; i<result.size();i++){
+            Log.e("AlarmTester2", alarms.get(i).getHour() + ":" + alarms.get(i).getMinute());
+        }
+        mRealm.close();
     }
 
-    protected void callAlarmScheduleService() {
-        Intent mathAlarmServiceIntent = new Intent(mContext, AlarmServiceBroadcastReciever.class);
-        mContext.sendBroadcast(mathAlarmServiceIntent, null);
-    }
+
 
     class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -116,9 +125,15 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
                         mAlarms.get(getAdapterPosition()).setState(false);
                     } else {
                         mAlarms.get(getAdapterPosition()).setState(true);
+                        Toast.makeText(mContext,
+                                AlarmHelper.getTimeUntilNextAlarmMessage(mAlarms.get(getAdapterPosition()).getHour(),
+                                        mAlarms.get(getAdapterPosition()).getMinute(),
+                                        mAlarms.get(getAdapterPosition()).getAmPm(),
+                                        mAlarms.get(getAdapterPosition()).getRepeatWeekly(),
+                                        mAlarms.get(getAdapterPosition()).getActiveDays()), Toast.LENGTH_LONG).show();
                     }
                     mRealm.commitTransaction();
-                    callAlarmScheduleService();
+                    AlarmHelper.callAlarmScheduleService(mContext);
                     notifyDataSetChanged();
                 }
             });

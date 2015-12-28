@@ -9,7 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ajanthan.alarmbot.Adapter.PagerAdapter;
+import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.R;
+
+import java.util.ArrayList;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -17,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RealmConfiguration config = new RealmConfiguration.Builder(getApplicationContext()).build();
+        Realm.setDefaultConfiguration(config);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
