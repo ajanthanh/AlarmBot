@@ -170,20 +170,30 @@ public class AlarmHelper {
         Set<Alarm> alarmQueue = new TreeSet<>(new Comparator<Alarm>() {
             @Override
             public int compare(Alarm lhs, Alarm rhs) {
+                if(lhs.getState()==false&&rhs.getState()==false){
+                    return 0;
+                }
+                else if(rhs.getState()==false){
+                    return -1; //lhs is closer
+                }
+                else if(lhs.getState()==false){
+                    return 1; //rhs is closer
+                }
 
-                long diff = AlarmHelper.getAlarmTime(lhs.getHour(),lhs.getMinute(),lhs.getRepeatWeekly(),lhs.getActiveDays()).getTimeInMillis() -
-                        AlarmHelper.getAlarmTime(rhs.getHour(),rhs.getMinute(),rhs.getRepeatWeekly(),rhs.getActiveDays()).getTimeInMillis();
-                Log.e("AlarmComp", AlarmHelper.getAlarmTime(lhs.getHour(),lhs.getMinute(),lhs.getRepeatWeekly(),lhs.getActiveDays()).get(Calendar.DAY_OF_MONTH)+" "+lhs.getHour()+":"+lhs.getMinute()+"  verses  "+
-                        AlarmHelper.getAlarmTime(rhs.getHour(),rhs.getMinute(),rhs.getRepeatWeekly(),rhs.getActiveDays()).get(Calendar.DAY_OF_MONTH)+" "+rhs.getHour()+":"+rhs.getMinute());
+                Calendar lAlarm =getAlarmTime(lhs.getHour(),lhs.getMinute(),lhs.getRepeatWeekly(),lhs.getActiveDays());
+                Calendar rAlarm=getAlarmTime(rhs.getHour(),rhs.getMinute(),rhs.getRepeatWeekly(),rhs.getActiveDays());
+
+                long diff = lAlarm.getTimeInMillis() - rAlarm.getTimeInMillis();
+                Log.e("AlarmComp", lAlarm.get(Calendar.DAY_OF_MONTH)+" "+lhs.getHour()+":"+lhs.getMinute()+"  verses  "+
+                        rAlarm.get(Calendar.DAY_OF_MONTH)+" "+rhs.getHour()+":"+rhs.getMinute());
                 if(diff>0){
-                    Log.e("AlarmComp", "G"+ AlarmHelper.getAlarmTime(lhs.getHour(),lhs.getMinute(),lhs.getRepeatWeekly(),lhs.getActiveDays()).get(Calendar.DAY_OF_MONTH)+" "+lhs.getHour()+":"+lhs.getMinute());
-                    return 1;
+                    Log.e("AlarmComp", "G"+ lAlarm.get(Calendar.DAY_OF_MONTH)+" "+lhs.getHour()+":"+lhs.getMinute());
+                    return 1; //rhs is closer
                 }else if (diff < 0){
-                    Log.e("AlarmComp", "G"+ AlarmHelper.getAlarmTime(rhs.getHour(),rhs.getMinute(),rhs.getRepeatWeekly(),rhs.getActiveDays()).get(Calendar.DAY_OF_MONTH)+" "+rhs.getHour()+":"+rhs.getMinute());
-                    return -1;
+                    Log.e("AlarmComp", "G"+ rAlarm.get(Calendar.DAY_OF_MONTH)+" "+rhs.getHour()+":"+rhs.getMinute());
+                    return -1; //lhs is closer
                 }
                 return 0;
-
 
             }
         });

@@ -40,15 +40,14 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Alarm alarm = AlarmHelper.getNext();
-
-        if (alarm != null) {
+        if (alarm != null&&alarm.getState()==true) {
             Log.e("AlarmTester", "Current: " + alarm.getHour() + ":" + alarm.getMinute());
             AlarmHelper.schedule(getApplicationContext(), alarm.getKey());
 
         } else {
             Intent i = new Intent(getApplicationContext(), AlarmAlertBroadcastReciever.class);
             i.putExtra("alarm", new RealmAlarm().getKey());
-
+            Log.e("AlarmTester", "No active Alarms");
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 
