@@ -176,11 +176,12 @@ public class AlarmDetailActivity extends Activity {
                 mRealm.beginTransaction();
                 RealmAlarm alarm;
                 if (getIntent().getStringExtra("cmd").equals("new")) {
-                    alarm = new RealmAlarm(getHour(), getMinute(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
+                    alarm = new RealmAlarm(getHour(), getMinute(), getAmPm(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
                             getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
                     mRealm.copyToRealm(alarm);
                     mAlarm = alarm;
                 } else {
+                    mAlarm.setAmPm(getAmPm());
                     mAlarm.setHour(getHour());
                     mAlarm.setMinute(getMinute());
                     mAlarm.setActiveDays(getActiveDaysAsString(getActiveDays()));
@@ -194,7 +195,7 @@ public class AlarmDetailActivity extends Activity {
                 mRealm.commitTransaction();
 
                 Toast.makeText(AlarmDetailActivity.this,
-                        AlarmHelper.getTimeUntilNextAlarmMessage(mAlarm.getHour(),mAlarm.getMinute(),mAlarm.getAmPm(),mAlarm.getRepeatWeekly(),mAlarm.getActiveDays()),
+                        AlarmHelper.getTimeUntilNextAlarmMessage(mAlarm.getHour(), mAlarm.getMinute(), mAlarm.getAmPm(), mAlarm.getRepeatWeekly(), mAlarm.getActiveDays()),
                         Toast.LENGTH_LONG).show();
 
                 callAlarmScheduleService();
@@ -212,7 +213,7 @@ public class AlarmDetailActivity extends Activity {
 
     private void callAlarmScheduleService() {
         Intent i = new Intent(this, AlarmServiceBroadcastReciever.class);
-        sendBroadcast(i,null);
+        sendBroadcast(i, null);
     }
 
     private Boolean[] getActiveDays() {
@@ -303,4 +304,13 @@ public class AlarmDetailActivity extends Activity {
         return "";
     }
 
+    public String getAmPm() {
+        int hour=getHour();
+        if (hour == 0 ||hour / 12 == 0) {
+            return "AM";
+        }
+        else{
+            return "PM";
+        }
+    }
 }

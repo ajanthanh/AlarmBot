@@ -46,19 +46,11 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
 
     }
 
-    public RealmAlarm(int hour, int minute, String activeDays, Boolean repeatWeekly, int alarmType,
+    public RealmAlarm(int hour, int minute, String amPm, String activeDays, Boolean repeatWeekly, int alarmType,
                       int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
-        if (hour == 0) {
-            this.hour = 12;
-            amPm = "AM";
-        } else if (hour / 12 == 0) {
-            this.hour = hour;
-            amPm = "AM";
-        } else if (hour / 12 == 1) {
-            this.hour = hour;
-            amPm = "PM";
-        }
+        this.hour = hour;
         this.minute = minute;
+        this.amPm=amPm;
         this.activeDays = activeDays;
         this.repeatWeekly = repeatWeekly;
         this.alarmType = alarmType;

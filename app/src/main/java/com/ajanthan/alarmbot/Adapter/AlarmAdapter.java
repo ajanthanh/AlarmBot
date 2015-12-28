@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ajanthan.alarmbot.Activity.AlarmDetailActivity;
+import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.R;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
@@ -72,6 +73,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
         notifyDataSetChanged();
     }
 
+    protected void callAlarmScheduleService() {
+        Intent mathAlarmServiceIntent = new Intent(mContext, AlarmServiceBroadcastReciever.class);
+        mContext.sendBroadcast(mathAlarmServiceIntent, null);
+    }
 
     class AlarmViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -113,6 +118,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
                         mAlarms.get(getAdapterPosition()).setState(true);
                     }
                     mRealm.commitTransaction();
+                    callAlarmScheduleService();
                     notifyDataSetChanged();
                 }
             });

@@ -24,15 +24,16 @@ public class AlarmHelper {
 //    Return Calendar of set to the next active alarm time and date
 
     static public Calendar getAlarmTime(int hour, int minute, String amPm, Boolean repeatWeekly, String activeDaysString) {
-        Calendar alarmTime = getCalendarAlarmTime(hour, minute, amPm);
+        Log.e("AlarmI",hour+": "+minute+" "+amPm);
+        Calendar alarmTime = getCalendarAlarmTime(hour, minute);
         Boolean[] activeDays = getActiveDays(activeDaysString);
-        if (alarmTime.before(Calendar.getInstance()))
+        if (alarmTime.before(Calendar.getInstance())) {
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
-
-//        Log.e("Alarm",alarmTime.get(Calendar.DAY_OF_WEEK)+"");
+            Log.e("AlarmLess", Calendar.getInstance().toString()+"  ||  "+alarmTime.toString());
+        }
 
         for (int i = alarmTime.get(Calendar.DAY_OF_WEEK) - 1; i < 7 && activeDays[i] == false; i++) {
-            Log.e("Alarm", alarmTime.get(Calendar.DAY_OF_WEEK) + " | " + i);
+            Log.e("AlarmMore", alarmTime.get(Calendar.DAY_OF_WEEK) + " | " + i);
             alarmTime.add(Calendar.DAY_OF_MONTH, 1);
             if (i == 6 && repeatWeekly) {
                 for (int j = 0; activeDays[j] == false && j < 7; j++) {
@@ -90,7 +91,7 @@ public class AlarmHelper {
             return true;
         } else {
             Boolean[] activeDays = getActiveDays(activeDaysString);
-            Calendar alarmTime = getCalendarAlarmTime(hour, minute, amPm);
+            Calendar alarmTime = getCalendarAlarmTime(hour, minute);
             int lastDayOfWeek = 0;
 
             for (int i = 0; i < 7; i++) {
@@ -117,13 +118,12 @@ public class AlarmHelper {
         }
     }
 
-    static private Calendar getCalendarAlarmTime(int hour, int minute, String amPm) {
+    static private Calendar getCalendarAlarmTime(int hour, int minute) {
         Calendar alarmTime = Calendar.getInstance();
 
         alarmTime.set(Calendar.HOUR_OF_DAY, hour);
         alarmTime.set(Calendar.MINUTE, minute);
         alarmTime.set(Calendar.SECOND, 0);
-        alarmTime.set(Calendar.AM_PM, (amPm == "PM") ? Calendar.PM : Calendar.AM);
 
         return alarmTime;
 
