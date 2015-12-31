@@ -21,6 +21,7 @@
             android:paddingTop="10dp">
 
             <TextView
+                android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -28,6 +29,7 @@
                 android:textSize="50dp" />
 
             <TextView
+                android:id="@+id/amPm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -38,21 +40,23 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wdrap_content"
             android:gravity="center"
             android:text="Good Morning"
             android:textSize="30dp" />
     </LinearLayout>
     <Button
+        android:id="@id/snooze"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:text="Snooze"
-        android:textSize="18dp"/>
+        android:textSize="18dp" />
     <Button
+        android:id="@+id/dismiss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dimiss"
+        android:text="Dismiss"
         android:textSize="18dp"
         android:layout_weight="1"/>
 </LinearLayout>
