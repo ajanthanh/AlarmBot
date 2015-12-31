@@ -1,6 +1,7 @@
 package com.ajanthan.alarmbot.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.ajanthan.alarmbot.AlarmHelper;
+import com.ajanthan.alarmbot.Objects.AlarmTone;
 import com.ajanthan.alarmbot.R;
 
 import java.util.Calendar;
@@ -59,7 +61,9 @@ public class AlarmAlertActivity extends Activity {
             public void onClick(View v) {
                 //TODO stop alarm
                 Log.e("AlarmAlert", "Dismiss");
-                finish();
+                Intent i=new Intent(AlarmAlertActivity.this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
             }
         });
     }
