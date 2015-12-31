@@ -9,13 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ajanthan.alarmbot.Adapter.PagerAdapter;
-import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.R;
-
-import java.util.ArrayList;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity {

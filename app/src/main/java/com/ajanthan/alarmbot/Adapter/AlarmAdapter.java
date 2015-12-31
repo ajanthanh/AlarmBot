@@ -3,7 +3,6 @@ package com.ajanthan.alarmbot.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +12,13 @@ import android.widget.Toast;
 
 import com.ajanthan.alarmbot.Activity.AlarmDetailActivity;
 import com.ajanthan.alarmbot.AlarmHelper;
-import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
-import com.ajanthan.alarmbot.Fragment.TabFragment1;
 import com.ajanthan.alarmbot.Objects.Alarm;
-import com.ajanthan.alarmbot.R;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
+import com.ajanthan.alarmbot.R;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by ajanthan on 15-11-26.

@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.ajanthan.alarmbot.Objects.AlarmTone;
 import com.ajanthan.alarmbot.Adapter.AlarmToneAdapter;
+import com.ajanthan.alarmbot.Objects.AlarmTone;
 import com.ajanthan.alarmbot.R;
 
 import java.util.ArrayList;

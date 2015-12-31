@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.ajanthan.alarmbot.Activity.AlarmDetailActivity;
 import com.ajanthan.alarmbot.Adapter.AlarmAdapter;
 import com.ajanthan.alarmbot.AlarmHelper;
-import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
 import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
 import com.ajanthan.alarmbot.R;
@@ -23,7 +22,6 @@ import com.ajanthan.alarmbot.R;
 import java.util.ArrayList;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class TabFragment1 extends Fragment {

@@ -14,15 +14,7 @@ import com.ajanthan.alarmbot.Objects.Alarm;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 /**
  * Created by ajanthan on 15-12-19.

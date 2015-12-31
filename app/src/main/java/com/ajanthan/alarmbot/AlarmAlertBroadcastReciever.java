@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.ajanthan.alarmbot.Activity.AlarmAlertActivity;
 import com.ajanthan.alarmbot.Objects.Alarm;
