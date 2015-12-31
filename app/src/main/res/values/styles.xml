@@ -42,11 +42,15 @@
         <item name="android:background">@null</item>
     </style>
 
-    android:textSize="@dimen/alarm_detail_text_size"
-    android:layout_gravity="right"
-    android:gravity="right"
-    android:entries="@array/repeat_weekly_options"
-    android:background="@null"
-    style="@android:style/Theme.Holo.Light.DarkActionBar"
+    <style name="CustomBetterPickersRadialTimePickerDialog">
+        <item name="bpMainColor1">@color/custom_tp_main1</item>
+        <item name="bpMainColor2">@color/custom_tp_main2</item>
+        <item name="bpAccentColor">@color/custom_tp_accent</item>
+        <item name="bpMainTextColor">@color/custom_tp_text</item>
+        <item name="bpDoneTextColor">@color/custom_tp_text</item>
+        <item name="bpLineColor">@color/custom_tp_main2</item>
+        <item name="bpDoneBackgroundColor">@drawable/tp_done_background_color</item>
+        <item name="bpSelectionAlpha">102</item>
+    </style>
 
 </resources>

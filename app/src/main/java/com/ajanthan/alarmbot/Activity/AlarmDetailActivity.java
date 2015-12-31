@@ -117,8 +117,8 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
                 RadialTimePickerDialogFragment timePickerDialog = RadialTimePickerDialogFragment
                         .newInstance(AlarmDetailActivity.this, now.getHourOfDay(), now.getMinuteOfHour(),
                                 DateFormat.is24HourFormat(AlarmDetailActivity.this));
-                timePickerDialog.setThemeDark(true);
-                    timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
+                timePickerDialog.setThemeCustom(R.style.CustomBetterPickersRadialTimePickerDialog);
+                timePickerDialog.show(getSupportFragmentManager(), FRAG_TAG_TIME_PICKER);
             }
         });
     }

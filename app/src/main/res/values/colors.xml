@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="primaryDarkBackground">#1d1d1d</color>
+
+    <!--Alarm Detail Time Selector-->
+
+    <color name="custom_tp_main1">@color/primaryDarkBackground</color>
+    <color name="custom_tp_main2">@color/primaryDarkBackground</color>
+    <color name="custom_tp_accent">#c0392b</color>
+    <color name="custom_tp_text">#ecf0f1</color>
+    <color name="custom_tp_divider">#808080</color>
 </resources>
