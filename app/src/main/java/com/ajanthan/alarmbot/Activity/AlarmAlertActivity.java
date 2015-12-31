@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ajanthan.alarmbot.AlarmHelper;
 import com.ajanthan.alarmbot.R;
 
 import java.util.Calendar;
@@ -32,15 +33,17 @@ public class AlarmAlertActivity extends Activity {
         bSnooze = (Button) findViewById(R.id.snooze);
         bDismiss = (Button) findViewById(R.id.dismiss);
 
-        tvTime.setText(Calendar.getInstance().get(Calendar.HOUR) + ":" +
-                Calendar.getInstance().get(Calendar.MINUTE));
-        tvAmPm.setText((Calendar.getInstance().get(Calendar.HOUR) < 12) ? "AM" : "PM");
+        tvTime.setText(AlarmHelper.getFormatedTime(
+                Calendar.getInstance().get(Calendar.HOUR),
+                Calendar.getInstance().get(Calendar.MINUTE)));
+        tvAmPm.setText((Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12) ? "AM" : "PM");
 
         setDismissOnClickListener();
         setSnoozeOnClickListener();
 
     }
-    private void setSnoozeOnClickListener(){
+
+    private void setSnoozeOnClickListener() {
         bSnooze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,12 +53,13 @@ public class AlarmAlertActivity extends Activity {
         });
     }
 
-    private void setDismissOnClickListener(){
+    private void setDismissOnClickListener() {
         bDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO stop alarm
-                Log.e("AlarmAlert","Dismiss");
+                Log.e("AlarmAlert", "Dismiss");
+                finish();
             }
         });
     }

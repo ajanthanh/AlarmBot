@@ -57,11 +57,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, int position) {
         Alarm alarm = mAlarms.get(position);
-        if (alarm.getMinute() < 10) {
-            holder.tvAlarmFragment.setText(alarm.getHour() + ":0" + alarm.getMinute());
-        } else {
-            holder.tvAlarmFragment.setText(alarm.getHour() + ":" + alarm.getMinute());
-        }
+        holder.tvAlarmFragment.setText(AlarmHelper.getFormatedTime(alarm.getHour(), alarm.getMinute()));
         holder.tvAmPmFragment.setText(alarm.getAmPm());
         holder.sActiveFragment.setChecked(alarm.getState());
         holder.tvAlarmActiveDaysFragment.setText(alarm.getActiveDays());
@@ -75,7 +71,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     public void update(ArrayList<Alarm> alarms) {
         mAlarms = alarms;
         notifyDataSetChanged();
-        mRealm.close();
     }
 
 

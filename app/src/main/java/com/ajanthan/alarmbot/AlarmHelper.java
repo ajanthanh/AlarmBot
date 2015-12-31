@@ -208,4 +208,22 @@ public class AlarmHelper {
 
     }
 
+    static public String getFormatedTime(int hour, int minute) {
+        String time = "";
+        if (hour == 0) {
+            time = "12:";
+        } else if (hour > 11) {
+            time = hour - 12 + ":";
+        } else {
+            time = hour + ":";
+        }
+
+        if (minute < 10) {
+            time += "0" + minute;
+        } else {
+            time += minute;
+        }
+        return time;
+    }
+
 }

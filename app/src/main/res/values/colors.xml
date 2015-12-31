@@ -10,7 +10,7 @@
 
     <color name="custom_tp_main1">@color/primaryDarkBackground</color>
     <color name="custom_tp_main2">@color/primaryDarkBackground</color>
-    <color name="custom_tp_accent">#c0392b</color>
+    <color name="custom_tp_accent">#2980b9</color>
     <color name="custom_tp_text">#ecf0f1</color>
     <color name="custom_tp_divider">#808080</color>
 </resources>

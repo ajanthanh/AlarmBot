@@ -1,18 +1,14 @@
 package com.ajanthan.alarmbot.Activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -24,8 +20,8 @@ import android.widget.ToggleButton;
 import com.ajanthan.alarmbot.AlarmHelper;
 import com.ajanthan.alarmbot.AlarmServiceBroadcastReciever;
 import com.ajanthan.alarmbot.Objects.Alarm;
-import com.ajanthan.alarmbot.R;
 import com.ajanthan.alarmbot.Objects.RealmAlarm;
+import com.ajanthan.alarmbot.R;
 import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 
 import org.joda.time.DateTime;
@@ -55,6 +51,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     private LinearLayout lvolumeFragment;
 
     private TextView tvTime;
+    private TextView tvAmPm;
     private TextView tvAlarmDate;
     private Switch sRepeatWeekly;
     private Spinner sAlarmType;
@@ -63,6 +60,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     private Switch sSnooze;
     private Switch sSmartAlarm;
     private ArrayList<ToggleButton> bActiveDays;
+    private String formatedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +75,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         lvolumeFragment = (LinearLayout) findViewById(R.id.volumeFragment);
 
         tvTime = (TextView) findViewById(R.id.time);
+        tvAmPm = (TextView) findViewById(R.id.amPm);
         tvAlarmDate = (TextView) findViewById(R.id.alarmDate);
         sRepeatWeekly = (Switch) findViewById(R.id.repeatWeekly);
         sAlarmType = (Spinner) findViewById(R.id.alarmType);
@@ -101,6 +100,8 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
                     .findAll();
             mAlarm = result.get(0);
             setDetailActivityFields();
+        } else {
+            setDefaultActivityFeilds();
         }
         mRealm.close();
         setCustomToolBarListeners();
@@ -124,6 +125,8 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     }
 
     private void setDetailActivityFields() {
+        tvTime.setText(AlarmHelper.getFormatedTime(mAlarm.getHour(), mAlarm.getMinute()));
+        tvAmPm.setText(mAlarm.getAmPm());
         sRepeatWeekly.setChecked(mAlarm.getRepeatWeekly());
         sAlarmType.setSelection(mAlarm.getAlarmType());
         tvTone.setText(mAlarm.getTone());
@@ -138,8 +141,17 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         if (mAlarm.getActiveDays().contains("THU")) bActiveDays.get(4).setChecked(true);
         if (mAlarm.getActiveDays().contains("FRI")) bActiveDays.get(5).setChecked(true);
         if (mAlarm.getActiveDays().contains("SAT")) bActiveDays.get(6).setChecked(true);
-
     }
+
+    private void setDefaultActivityFeilds() {
+        sRepeatWeekly.setChecked(true);
+        sSmartAlarm.setChecked(true);
+        sSnooze.setChecked(true);
+        bActiveDays.get(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1).setChecked(true);
+        tvTime.setText(AlarmHelper.getFormatedTime(Calendar.getInstance().get(Calendar.HOUR), Calendar.getInstance().get(Calendar.MINUTE)));
+        tvAmPm.setText((Calendar.getInstance().get(Calendar.HOUR) < 12) ? "AM" : "PM");
+    }
+
 
     @Override
     protected void onStart() {
@@ -293,11 +305,13 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     }
 
     private int getHour() {
-        return 1;
+        return Integer.parseInt(tvTime.getText().toString().substring(
+                0, (tvTime.getText().toString().indexOf(":"))))+((getAmPm()=="PM")?12:0);
     }
 
     private int getMinute() {
-        return 1;
+        return Integer.parseInt(tvTime.getText().toString().substring(
+                (tvTime.getText().toString().indexOf(":")+1), (tvTime.getText().toString().length())));
     }
 
     private String getActiveDaysAsString(Boolean[] activeDays) {
@@ -332,16 +346,14 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     }
 
     public String getAmPm() {
-        int hour = getHour();
-        if (hour == 0 || hour / 12 == 0) {
-            return "AM";
-        } else {
-            return "PM";
-        }
+        return tvAmPm.getText().toString();
     }
 
     @Override
     public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
-
+        tvTime.setText(AlarmHelper.getFormatedTime(hourOfDay, minute));
+        tvAmPm.setText((hourOfDay < 12) ? "AM" : "PM");
     }
+
+
 }
