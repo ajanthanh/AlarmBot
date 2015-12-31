@@ -1,1 +1,3 @@
-/build
+/build*
+realm_version_check.timestamp
+app/app.iml
