@@ -2,9 +2,11 @@ package com.ajanthan.alarmbot.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
+import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -92,6 +94,9 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDayFriday));
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySaturday));
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+
         mRealm = Realm.getDefaultInstance();
         if (getIntent().getStringExtra("cmd").equals("edit")) {
             RealmResults<RealmAlarm> result = mRealm.where(RealmAlarm.class)
@@ -103,6 +108,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
             setDefaultActivityFeilds();
         }
         mRealm.close();
+
         setCustomToolBarListeners();
         setTimeOnClickListener();
         setFeildOnClickListener();
