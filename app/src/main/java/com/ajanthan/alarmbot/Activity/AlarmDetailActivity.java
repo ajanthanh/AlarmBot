@@ -3,6 +3,9 @@ package com.ajanthan.alarmbot.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
@@ -134,7 +137,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         tvAmPm.setText(mAlarm.getAmPm());
         sRepeatWeekly.setChecked(mAlarm.getRepeatWeekly());
         sAlarmType.setSelection(mAlarm.getAlarmType());
-        tvTone.setText(mAlarm.getTone());
+        tvTone.setText(mAlarm.getToneName());
         sVolume.setProgress(mAlarm.getVolume());
         sSnooze.setChecked(mAlarm.getSnooze());
         sSmartAlarm.setChecked(mAlarm.getSmartAlarm());
@@ -155,6 +158,10 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         bActiveDays.get(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1).setChecked(true);
         tvTime.setText(AlarmHelper.getFormatedTime(Calendar.getInstance().get(Calendar.HOUR), Calendar.getInstance().get(Calendar.MINUTE)));
         tvAmPm.setText((Calendar.getInstance().get(Calendar.HOUR) < 12) ? "AM" : "PM");
+
+        Uri defaultRintoneUri = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_RINGTONE);
+        Ringtone defaultRingtone = RingtoneManager.getRingtone(this, defaultRintoneUri);
+        tvTone.setText(defaultRingtone.getTitle(this));
     }
 
 
@@ -204,6 +211,8 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(AlarmDetailActivity.this, AlarmToneActivity.class);
+
+                i.putExtra("alarmToneName", getToneName());
                 startActivity(i);
             }
         });
@@ -217,7 +226,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
                 RealmAlarm alarm;
                 if (getIntent().getStringExtra("cmd").equals("new")) {
                     alarm = new RealmAlarm(getHour(), getMinute(), getAmPm(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
-                            getVolume(), getTone(), getSnooze(), getSmartAlarm(), true);
+                            getVolume(), getToneName(), getToneUri(), getSnooze(), getSmartAlarm(), true);
                     mRealm.copyToRealm(alarm);
                     mAlarm = alarm;
                 } else {
@@ -228,7 +237,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
                     mAlarm.setRepeatWeekly(getRepeatWeekly());
                     mAlarm.setAlarmType(getAlarmType());
                     mAlarm.setVolume(getVolume());
-                    mAlarm.setTone(getTone());
+                    mAlarm.setToneName(getToneName());
                     mAlarm.setSnooze(getSnooze());
                     mAlarm.setSmartAlarm(getSmartAlarm());
                 }
@@ -296,8 +305,17 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         return sVolume.getVerticalScrollbarPosition(); //TODO: implement volume
     }
 
-    private String getTone() {
+    private String getToneName() {
         return tvTone.getText().toString();
+    }
+
+
+    public String getToneUri() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        if(prefs.getString("currentAlarmToneUri", "").isEmpty()){
+            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString();
+        }
+        return prefs.getString("currentAlarmToneUri", "");
     }
 
     private Boolean getSnooze() {
@@ -359,6 +377,5 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         tvTime.setText(AlarmHelper.getFormatedTime(hourOfDay, minute));
         tvAmPm.setText((hourOfDay < 12) ? "AM" : "PM");
     }
-
 
 }

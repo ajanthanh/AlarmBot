@@ -17,7 +17,9 @@ public interface Alarm {
 
     int getVolume();
 
-    String getTone();
+    String getToneName();
+
+    String getToneUri();
 
     Boolean getSmartAlarm();
 
@@ -41,7 +43,9 @@ public interface Alarm {
 
     void setVolume(int volume);
 
-    void setTone(String tone);
+    void setToneName(String toneName);
+
+    void setToneUri(String toneUri);
 
     void setSmartAlarm(Boolean smartAlarm);
 

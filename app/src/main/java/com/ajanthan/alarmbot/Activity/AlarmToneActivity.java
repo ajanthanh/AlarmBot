@@ -1,12 +1,14 @@
 package com.ajanthan.alarmbot.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.ajanthan.alarmbot.Adapter.AlarmToneAdapter;
 import com.ajanthan.alarmbot.Objects.AlarmTone;
@@ -27,9 +29,9 @@ public class AlarmToneActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_tone_list);
-
         rAlarmTones = (RecyclerView) findViewById(R.id.alarmTonesList);
-        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone());
+        Intent i =getIntent();
+        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone(),i.getStringExtra("alarmToneName") );
         rAlarmTones.setAdapter(adapterAlarmTone);
         rAlarmTones.setLayoutManager(new LinearLayoutManager(this));
 
@@ -43,23 +45,25 @@ public class AlarmToneActivity extends Activity {
         editor.putString("currentAlarmToneName", alarmTone.getName());
         editor.putString("currentAlarmToneUri", alarmTone.getUri());
         editor.commit();
-
         super.onPause();
+        finish();
     }
 
     private ArrayList<AlarmTone> fetchAlarmTone() {
         RingtoneManager manager = new RingtoneManager(this);
         manager.setType(RingtoneManager.TYPE_ALARM);
-        Cursor cursor = manager.getCursor();
-        ArrayList<AlarmTone> alarmTones = new ArrayList<AlarmTone>();
+        Cursor alarmsCursor = manager.getCursor();
+        ArrayList<AlarmTone> alarmTones = new ArrayList<AlarmTone>(alarmsCursor.getCount());
 
-        while (cursor.moveToNext()) {
-            String notificationTitle = cursor.getString(RingtoneManager.TITLE_COLUMN_INDEX);
-            String notificationUri = cursor.getString(RingtoneManager.URI_COLUMN_INDEX);
-            alarmTones.add(new AlarmTone(notificationTitle, notificationUri));
+        if (alarmsCursor.moveToFirst()) {
+            do {
+                alarmTones.add(new AlarmTone(
+                        manager.getRingtone(alarmsCursor.getPosition()).getTitle(this),
+                        manager.getRingtoneUri(alarmsCursor.getPosition()).toString()));
+            } while (alarmsCursor.moveToNext());
         }
+        alarmsCursor.close();
         return alarmTones;
-
     }
 
 

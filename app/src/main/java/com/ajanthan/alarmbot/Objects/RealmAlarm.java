@@ -1,7 +1,5 @@
 package com.ajanthan.alarmbot.Objects;
 
-import com.ajanthan.alarmbot.Objects.Alarm;
-
 import java.io.Serializable;
 
 import io.realm.RealmObject;
@@ -11,9 +9,9 @@ import io.realm.annotations.PrimaryKey;
  * Created by ajanthan on 15-11-04.
  */
 public class RealmAlarm extends RealmObject implements Alarm, Serializable {
-    public final static int SOUND =0;
-    public final static int VIBRATE =1;
-    public final static int SOUND_AND_VIBRATE =2;
+    public final static int SOUND = 0;
+    public final static int VIBRATE = 1;
+    public final static int SOUND_AND_VIBRATE = 2;
 
     @PrimaryKey
     private long key;
@@ -24,42 +22,44 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
     private Boolean state;
     private String amPm;
     private int volume;
-    private String tone;
+    private String toneName;
+    private String toneUri;
     private Boolean smartAlarm;
     private Boolean snooze;
     private int alarmType;
     private Boolean repeatWeekly;
 
-    public RealmAlarm(){
+    public RealmAlarm() {
         this.hour = 12;
         this.amPm = "PM";
-        this.state=true;
+        this.state = true;
         this.minute = 0;
-        this.activeDays ="";
+        this.activeDays = "";
         this.repeatWeekly = false;
         this.alarmType = 0;
         this.volume = 1;                 //TODO: implement volume
-        this.tone = "Default";
+        this.toneName = "Default";
         this.snooze = false;
         this.smartAlarm = false;
-        this.key=System.currentTimeMillis();
+        this.key = System.currentTimeMillis();
 
     }
 
     public RealmAlarm(int hour, int minute, String amPm, String activeDays, Boolean repeatWeekly, int alarmType,
-                      int volume, String tone, boolean snooze, boolean smartAlarm, boolean state) {
+                      int volume, String toneName, String tonUri, boolean snooze, boolean smartAlarm, boolean state) {
         this.hour = hour;
         this.minute = minute;
-        this.amPm=amPm;
+        this.amPm = amPm;
         this.activeDays = activeDays;
         this.repeatWeekly = repeatWeekly;
         this.alarmType = alarmType;
         this.volume = volume;                 //TODO: implement volume
-        this.tone = tone;
+        this.toneName = toneName;
+        this.toneUri = tonUri;
         this.snooze = snooze;
         this.smartAlarm = smartAlarm;
         this.state = state;
-        this.key=System.currentTimeMillis();
+        this.key = System.currentTimeMillis();
 
     }
 
@@ -87,8 +87,8 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         return volume;
     }
 
-    public String getTone() {
-        return tone;
+    public String getToneName() {
+        return toneName;
     }
 
     public Boolean getSmartAlarm() {
@@ -131,8 +131,8 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         this.volume = volume;
     }
 
-    public void setTone(String tone) {
-        this.tone = tone;
+    public void setToneName(String toneName) {
+        this.toneName = toneName;
     }
 
     public void setSmartAlarm(Boolean smartAlarm) {
@@ -157,5 +157,13 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
 
     public void setKey(long key) {
         this.key = key;
+    }
+
+    public String getToneUri() {
+        return toneUri;
+    }
+
+    public void setToneUri(String toneUri) {
+        this.toneUri = toneUri;
     }
 }

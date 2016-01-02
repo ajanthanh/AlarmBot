@@ -1,10 +1,14 @@
 package com.ajanthan.alarmbot.Adapter;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.CountDownTimer;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +28,13 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
     private LayoutInflater mInflate;
     private ArrayList<AlarmTone> mAlarmTones;
     private Context mContext;
-    private Ringtone currentRingTone;
+    private MediaPlayer mediaPlayer;
     private AlarmTone currentAlarmTone;
+    private CountDownTimer alarmToneTimer;
 
 
-    public AlarmToneAdapter(Context context, ArrayList<AlarmTone> alarmTones) {
+    public AlarmToneAdapter(Context context, ArrayList<AlarmTone> alarmTones, String alarmToneName) {
+        Log.e("AlarmToneLog", alarmToneName);
         mInflate = LayoutInflater.from(context);
         if (alarmTones == null) {
             mAlarmTones = new ArrayList<AlarmTone>();       //TODO handle no alarm tones case properly
@@ -37,6 +43,18 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
         }
         mContext = context;
 
+        if (alarmToneName.isEmpty()) {
+            mAlarmTones.get(0).setActive();
+            currentAlarmTone = mAlarmTones.get(0);
+
+        } else {
+            for (int i = 0; i < mAlarmTones.size(); i++) {
+                if (mAlarmTones.get(i).getName().equals(alarmToneName)) {
+                    mAlarmTones.get(i).setActive();
+                    currentAlarmTone = mAlarmTones.get(i);
+                }
+            }
+        }
     }
 
     @Override
@@ -60,9 +78,7 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
 
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
-        if (currentRingTone != null) {
-            currentRingTone.stop();
-        }
+        stopCurrentRingTone();
         super.onDetachedFromRecyclerView(recyclerView);
     }
 
@@ -71,8 +87,8 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
     }
 
     public void stopCurrentRingTone() {
-        if (currentRingTone != null) {
-            currentRingTone.stop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
         }
     }
 
@@ -103,9 +119,49 @@ public class AlarmToneAdapter extends RecyclerView.Adapter<AlarmToneAdapter.Alar
     }
 
     private void playAlarmTone(String notificationUri) {
-        stopCurrentRingTone();
-        Uri notification = Uri.parse(notificationUri);
-        currentRingTone = RingtoneManager.getRingtone(mContext, notification);
-        currentRingTone.play();
+        if (notificationUri != null) {
+            if (mediaPlayer == null) {
+                mediaPlayer = new MediaPlayer();
+            } else {
+                if (mediaPlayer.isPlaying())
+                    mediaPlayer.stop();
+                mediaPlayer.reset();
+            }
+            try {
+                mediaPlayer.setVolume(0.2f, 0.2f);
+                mediaPlayer.setDataSource(mContext, Uri.parse(notificationUri));
+                mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+                mediaPlayer.setLooping(false);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+
+                if (alarmToneTimer != null)
+                    alarmToneTimer.cancel();
+                alarmToneTimer = new CountDownTimer(3000, 3000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        try {
+                            if (mediaPlayer.isPlaying())
+                                mediaPlayer.stop();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                };
+                alarmToneTimer.start();
+            } catch (Exception e) {
+                try {
+                    if (mediaPlayer.isPlaying())
+                        mediaPlayer.stop();
+                } catch (Exception e2) {
+
+                }
+            }
+        }
     }
 }
