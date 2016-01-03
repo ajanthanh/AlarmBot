@@ -37,8 +37,8 @@ public class TabFragment1 extends Fragment {
         View view = inflater.inflate(R.layout.tab_fragment_1, container, false);
         rAlarms = (RecyclerView) view.findViewById(R.id.alarmList);
         ArrayList<Alarm> aAlarms = new ArrayList<Alarm>();
-        mRealm= Realm.getDefaultInstance();
-        adapterAlarm = new AlarmAdapter(getActivity(), fetchAlarms(),mRealm);
+        mRealm = Realm.getDefaultInstance();
+        adapterAlarm = new AlarmAdapter(getActivity(), fetchAlarms(), mRealm);
         rAlarms.setAdapter(adapterAlarm);
         rAlarms.setLayoutManager(new LinearLayoutManager(getActivity()));
         btnAddAlarm = (ImageButton) view.findViewById(R.id.addAlarm);
@@ -70,22 +70,21 @@ public class TabFragment1 extends Fragment {
         });
     }
 
-    private ArrayList<Alarm> fetchAlarms(){
+    private ArrayList<Alarm> fetchAlarms() {
         ArrayList<Alarm> alarms = new ArrayList<Alarm>();
-        Realm realm= Realm.getDefaultInstance();
+        Realm realm = Realm.getDefaultInstance();
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .findAll();
-        for(int i =0; i<result.size();i++){
+        for (int i = 0; i < result.size(); i++) {
             alarms.add(result.get(i));
         }
         realm.close();
         return alarms;
     }
 
-    private void update(){
+    private void update() {
         adapterAlarm.update(fetchAlarms());
     }
-
 
 
 }

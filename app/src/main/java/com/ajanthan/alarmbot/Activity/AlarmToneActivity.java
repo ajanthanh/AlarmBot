@@ -8,7 +8,6 @@ import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.ajanthan.alarmbot.Adapter.AlarmToneAdapter;
 import com.ajanthan.alarmbot.Objects.AlarmTone;
@@ -30,8 +29,8 @@ public class AlarmToneActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_tone_list);
         rAlarmTones = (RecyclerView) findViewById(R.id.alarmTonesList);
-        Intent i =getIntent();
-        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone(),i.getStringExtra("alarmToneName") );
+        Intent i = getIntent();
+        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone(), i.getStringExtra("alarmToneName"));
         rAlarmTones.setAdapter(adapterAlarmTone);
         rAlarmTones.setLayoutManager(new LinearLayoutManager(this));
 

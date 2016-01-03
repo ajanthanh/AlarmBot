@@ -312,7 +312,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
 
     public String getToneUri() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        if(prefs.getString("currentAlarmToneUri", "").isEmpty()){
+        if (prefs.getString("currentAlarmToneUri", "").isEmpty()) {
             return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString();
         }
         return prefs.getString("currentAlarmToneUri", "");
@@ -329,12 +329,12 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
 
     private int getHour() {
         return Integer.parseInt(tvTime.getText().toString().substring(
-                0, (tvTime.getText().toString().indexOf(":"))))+((getAmPm()=="PM")?12:0);
+                0, (tvTime.getText().toString().indexOf(":")))) + ((getAmPm() == "PM") ? 12 : 0);
     }
 
     private int getMinute() {
         return Integer.parseInt(tvTime.getText().toString().substring(
-                (tvTime.getText().toString().indexOf(":")+1), (tvTime.getText().toString().length())));
+                (tvTime.getText().toString().indexOf(":") + 1), (tvTime.getText().toString().length())));
     }
 
     private String getActiveDaysAsString(Boolean[] activeDays) {

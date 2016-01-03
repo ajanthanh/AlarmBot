@@ -24,6 +24,8 @@ public class AlarmAlertBroadcastReciever extends BroadcastReceiver {
 
         Intent alarmAlertActivityIntent = new Intent(context, AlarmAlertActivity.class);
 
+        alarmAlertActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         alarmAlertActivityIntent.putExtra("alarm", alarm.getKey());
 
         alarmAlertActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
