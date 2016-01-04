@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,10 +28,9 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class AlarmAlertActivity extends Activity {
 
+    private static final String PREF_ALARM_KEY = "alarm";
     private Alarm mAlarm;
     private MediaPlayer mediaPlayer;
-    private static final ScheduledExecutorService worker =
-            Executors.newSingleThreadScheduledExecutor();
 
     private Boolean alarmActive;
 
@@ -41,6 +42,13 @@ public class AlarmAlertActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
         setContentView(R.layout.alarm_alert);
 
         tvTime = (TextView) findViewById(R.id.time);
@@ -57,7 +65,7 @@ public class AlarmAlertActivity extends Activity {
         setSnoozeOnClickListener();
 
         Intent i = getIntent();
-        mAlarm = AlarmHelper.getAlarm(i.getLongExtra("alarm", 0), this);
+        mAlarm = AlarmHelper.getAlarm(i.getLongExtra(PREF_ALARM_KEY, 0), this);
 
         if (mAlarm == null) {
             mAlarm = new RealmAlarm();
@@ -100,7 +108,7 @@ public class AlarmAlertActivity extends Activity {
 
                         alarmAlertActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                        alarmAlertActivityIntent.putExtra("alarm", mAlarm.getKey());
+                        alarmAlertActivityIntent.putExtra(PREF_ALARM_KEY, mAlarm.getKey());
 
                         alarmAlertActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
