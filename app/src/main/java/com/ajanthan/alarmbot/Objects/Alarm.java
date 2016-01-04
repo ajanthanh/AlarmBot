@@ -31,6 +31,8 @@ public interface Alarm {
 
     long getKey();
 
+    String getAlarmName();
+
     void setState(Boolean mState);
 
     void setHour(int hour);
@@ -56,6 +58,8 @@ public interface Alarm {
     void setRepeatWeekly(Boolean repeatWeekly);
 
     void setKey(long key);
+
+    void setAlarmName(String alarmName);
 
 
 }

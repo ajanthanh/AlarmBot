@@ -34,6 +34,7 @@ public class AlarmAlertActivity extends Activity {
 
     private Boolean alarmActive;
 
+    private TextView tvAlarmName;
     private TextView tvTime;
     private TextView tvAmPm;
     private Button bSnooze;
@@ -51,6 +52,7 @@ public class AlarmAlertActivity extends Activity {
 
         setContentView(R.layout.alarm_alert);
 
+        tvAlarmName = (TextView) findViewById(R.id.name);
         tvTime = (TextView) findViewById(R.id.time);
         tvAmPm = (TextView) findViewById(R.id.amPm);
         bSnooze = (Button) findViewById(R.id.snooze);
@@ -70,6 +72,8 @@ public class AlarmAlertActivity extends Activity {
         if (mAlarm == null) {
             mAlarm = new RealmAlarm();
         }
+
+        tvAlarmName.setText(mAlarm.getAlarmName());
         startAlarm();
 
     }

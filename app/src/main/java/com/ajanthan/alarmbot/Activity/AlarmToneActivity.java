@@ -34,7 +34,7 @@ public class AlarmToneActivity extends Activity {
         setContentView(R.layout.alarm_tone_list);
         rAlarmTones = (RecyclerView) findViewById(R.id.alarmTonesList);
         Intent i = getIntent();
-        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone(), i.getStringExtra("alarmToneName"));
+        adapterAlarmTone = new AlarmToneAdapter(this, fetchAlarmTone(), i.getStringExtra(PREF_ALARM_TOME_NAME_KEY));
         rAlarmTones.setAdapter(adapterAlarmTone);
         rAlarmTones.setLayoutManager(new LinearLayoutManager(this));
 

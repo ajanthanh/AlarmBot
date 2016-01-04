@@ -28,6 +28,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
     private Boolean snooze;
     private int alarmType;
     private Boolean repeatWeekly;
+    private String alarmName;
 
     public RealmAlarm() {
         this.hour = 12;
@@ -39,6 +40,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         this.alarmType = 0;
         this.volume = 1;                 //TODO: implement volume
         this.toneName = "Default";
+        this.alarmName = "";
         this.snooze = false;
         this.smartAlarm = false;
         this.key = System.currentTimeMillis();
@@ -46,7 +48,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
     }
 
     public RealmAlarm(int hour, int minute, String amPm, String activeDays, Boolean repeatWeekly, int alarmType,
-                      int volume, String toneName, String tonUri, boolean snooze, boolean smartAlarm, boolean state) {
+                      int volume, String toneName, String tonUri, String alarmName, boolean snooze, boolean smartAlarm, boolean state) {
         this.hour = hour;
         this.minute = minute;
         this.amPm = amPm;
@@ -56,6 +58,7 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         this.volume = volume;                 //TODO: implement volume
         this.toneName = toneName;
         this.toneUri = tonUri;
+        this.alarmName = alarmName;
         this.snooze = snooze;
         this.smartAlarm = smartAlarm;
         this.state = state;
@@ -155,8 +158,18 @@ public class RealmAlarm extends RealmObject implements Alarm, Serializable {
         return key;
     }
 
+    @Override
+    public String getAlarmName() {
+        return alarmName;
+    }
+
     public void setKey(long key) {
         this.key = key;
+    }
+
+    @Override
+    public void setAlarmName(String alarmName) {
+        this.alarmName = alarmName;
     }
 
     public String getToneUri() {

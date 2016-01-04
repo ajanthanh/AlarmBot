@@ -1,5 +1,7 @@
 package com.ajanthan.alarmbot.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Ringtone;
@@ -7,11 +9,14 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputType;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -50,9 +55,10 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     private Button bSave;
     private Button bCancel;
 
-    private LinearLayout lRepeatWeeklyFragment;
-    private LinearLayout lAlarmTypeFragment;
-    private LinearLayout lvolumeFragment;
+    private LinearLayout lRepeatWeeklyContainer;
+    private LinearLayout lAlarmTypeContainer;
+    private LinearLayout lVolumeContainer;
+    private RelativeLayout rAlarmNameContainer;
 
     private TextView tvTime;
     private TextView tvAmPm;
@@ -61,6 +67,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     private Spinner sAlarmType;
     private TextView tvTone;
     private SeekBar sVolume;
+    private TextView tvAlarmName;
     private Switch sSnooze;
     private Switch sSmartAlarm;
     private ArrayList<ToggleButton> bActiveDays;
@@ -73,9 +80,10 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         bSave = (Button) findViewById(R.id.save);
         bCancel = (Button) findViewById(R.id.cancel);
 
-        lRepeatWeeklyFragment = (LinearLayout) findViewById(R.id.repeatWeeklyFragment);
-        lAlarmTypeFragment = (LinearLayout) findViewById(R.id.alarmTypeFragment);
-        lvolumeFragment = (LinearLayout) findViewById(R.id.volumeFragment);
+        lRepeatWeeklyContainer = (LinearLayout) findViewById(R.id.repeatWeeklyContainer);
+        lAlarmTypeContainer = (LinearLayout) findViewById(R.id.alarmTypeContainer);
+        lVolumeContainer = (LinearLayout) findViewById(R.id.volumeContainer);
+        rAlarmNameContainer = (RelativeLayout) findViewById(R.id.alarmNameContainer);
 
         tvTime = (TextView) findViewById(R.id.time);
         tvAmPm = (TextView) findViewById(R.id.amPm);
@@ -84,6 +92,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         sAlarmType = (Spinner) findViewById(R.id.alarmType);
         tvTone = (TextView) findViewById(R.id.alarmTone);
         sVolume = (SeekBar) findViewById(R.id.volume);
+        tvAlarmName = (TextView) findViewById(R.id.alarmName);
         sSnooze = (Switch) findViewById(R.id.snooze);
         sSmartAlarm = (Switch) findViewById(R.id.smartAlarm);
 
@@ -111,7 +120,41 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         setCustomToolBarListeners();
         setTimeOnClickListener();
         setFeildOnClickListener();
+        setAlarmNameOnClickListener();
 
+    }
+
+    private void setAlarmNameOnClickListener() {
+        rAlarmNameContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AlarmDetailActivity.this);
+                builder.setTitle("Title");
+
+                // Set up the input
+                final EditText input = new EditText(AlarmDetailActivity.this);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setText(getAlarmName());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        tvAlarmName.setText(input.getText().toString());
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
     }
 
     private void setTimeOnClickListener() {
@@ -135,6 +178,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         sAlarmType.setSelection(mAlarm.getAlarmType());
         tvTone.setText(mAlarm.getToneName());
         sVolume.setProgress(mAlarm.getVolume());
+        tvAlarmName.setText(mAlarm.getAlarmName());
         sSnooze.setChecked(mAlarm.getSnooze());
         sSmartAlarm.setChecked(mAlarm.getSmartAlarm());
 
@@ -150,6 +194,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     private void setDefaultActivityFeilds() {
         sRepeatWeekly.setChecked(true);
         sSmartAlarm.setChecked(true);
+        tvAlarmName.setText("Alarm Clock");
         sSnooze.setChecked(true);
         bActiveDays.get(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1).setChecked(true);
         tvTime.setText(AlarmHelper.getFormatedTime(Calendar.getInstance().get(Calendar.HOUR), Calendar.getInstance().get(Calendar.MINUTE)));
@@ -164,7 +209,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     @Override
     protected void onStart() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String restoredText = prefs.getString(PREF_ALARM_TONE_URI_KEY , "");
+        String restoredText = prefs.getString(PREF_ALARM_TOME_NAME_KEY, "");
         if (!restoredText.isEmpty()) {
             tvTone.setText(restoredText);
         }
@@ -172,14 +217,14 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     }
 
     private void setFeildOnClickListener() {
-        lRepeatWeeklyFragment.setOnClickListener(new View.OnClickListener() {
+        lRepeatWeeklyContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sRepeatWeekly.performClick();
             }
         });
 
-        lAlarmTypeFragment.setOnClickListener(new View.OnClickListener() {
+        lAlarmTypeContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sAlarmType.performClick();
@@ -190,9 +235,9 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (sAlarmType.getSelectedItemPosition() == 1) {
-                    lvolumeFragment.setVisibility(View.GONE);
+                    lVolumeContainer.setVisibility(View.GONE);
                 } else {
-                    lvolumeFragment.setVisibility(View.VISIBLE);
+                    lVolumeContainer.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -222,7 +267,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
                 RealmAlarm alarm;
                 if (getIntent().getStringExtra("cmd").equals("new")) {
                     alarm = new RealmAlarm(getHour(), getMinute(), getAmPm(), getActiveDaysAsString(getActiveDays()), getRepeatWeekly(), getAlarmType(),
-                            getVolume(), getToneName(), getToneUri(), getSnooze(), getSmartAlarm(), true);
+                            getVolume(), getToneName(), getToneUri(), getAlarmName(), getSnooze(), getSmartAlarm(), true);
                     mRealm.copyToRealm(alarm);
                     mAlarm = alarm;
                 } else {
@@ -375,4 +420,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         tvAmPm.setText((hourOfDay < 12) ? "AM" : "PM");
     }
 
+    public String getAlarmName() {
+        return tvAlarmName.getText().toString();
+    }
 }

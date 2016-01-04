@@ -202,7 +202,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/repeatWeeklyFragment"
+                    android:id="@+id/repeatWeeklyContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -236,7 +236,7 @@
                     android:paddingTop="@dimen/alarm_detail_settings_margin">
 
                     <LinearLayout
-                        android:id="@+id/alarmTypeFragment"
+                        android:id="@+id/alarmTypeContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -260,7 +260,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/volumeFragment"
+                        android:id="@+id/volumeContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/alarm_detail_settings_margin"
@@ -296,6 +296,32 @@
                         android:layout_alignParentRight="true"
                         android:textColor="@color/primaryTextColorLight"
                         android:text="Alarm Tone 1"
+                        android:textSize="@dimen/alarm_detail_text_size" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/alarmNameContainer"
+                    android:paddingBottom="@dimen/alarm_detail_settings_margin"
+                    android:paddingTop="@dimen/alarm_detail_settings_margin">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primaryTextColorLight"
+                        android:text="Alarm Label"
+                        android:textSize="@dimen/alarm_detail_text_size" />
+
+                    <TextView
+                        android:id="@+id/alarmName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/primaryTextColorLight"
+                        android:text="Alarm Clock"
                         android:textSize="@dimen/alarm_detail_text_size" />
 
                 </RelativeLayout>
