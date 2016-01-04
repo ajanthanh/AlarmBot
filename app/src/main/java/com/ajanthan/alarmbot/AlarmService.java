@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class AlarmService extends Service {
 
+    private final static String PREF_ALARM_KEY = "alarm";
+
     public List<Alarm> alarms = new ArrayList<Alarm>();
 
     @Nullable
@@ -39,7 +41,7 @@ public class AlarmService extends Service {
 
         } else {
             Intent i = new Intent(getApplicationContext(), AlarmAlertBroadcastReciever.class);
-            i.putExtra("alarm", new RealmAlarm().getKey());
+            i.putExtra(PREF_ALARM_KEY, new RealmAlarm().getKey());
             Toast.makeText(getApplicationContext(), "No Active Alarms", Toast.LENGTH_LONG).show();
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);

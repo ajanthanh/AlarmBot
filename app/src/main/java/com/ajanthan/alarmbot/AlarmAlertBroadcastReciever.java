@@ -13,6 +13,8 @@ import com.ajanthan.alarmbot.Objects.Alarm;
  */
 public class AlarmAlertBroadcastReciever extends BroadcastReceiver {
 
+    private final static String PREF_ALARM_KEY= "alarm";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, AlarmServiceBroadcastReciever.class);
@@ -20,13 +22,13 @@ public class AlarmAlertBroadcastReciever extends BroadcastReceiver {
 
         Bundle bundle = intent.getExtras();
 
-        final Alarm alarm = AlarmHelper.getAlarm(bundle.getLong("alarm"), context);
+        final Alarm alarm = AlarmHelper.getAlarm(bundle.getLong(PREF_ALARM_KEY), context);
 
         Intent alarmAlertActivityIntent = new Intent(context, AlarmAlertActivity.class);
 
         alarmAlertActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        alarmAlertActivityIntent.putExtra("alarm", alarm.getKey());
+        alarmAlertActivityIntent.putExtra(PREF_ALARM_KEY, alarm.getKey());
 
         alarmAlertActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

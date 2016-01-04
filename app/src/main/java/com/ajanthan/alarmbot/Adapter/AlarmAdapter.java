@@ -30,6 +30,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
     private Context mContext;
     private Realm mRealm;
 
+    private final static String PREF_ALARM_KEY = "key";
+
 
     public AlarmAdapter(Context context, ArrayList<Alarm> alarms, Realm realm) {
         mInflate = LayoutInflater.from(context);
@@ -94,7 +96,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             Toast.makeText(mContext, "Alarm Clicked: " + this.getAdapterPosition(), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(mContext, AlarmDetailActivity.class);
             i.putExtra("cmd", "edit");
-            i.putExtra("key", mAlarms.get(getAdapterPosition()).getKey());
+            i.putExtra(PREF_ALARM_KEY, mAlarms.get(getAdapterPosition()).getKey());
             mContext.startActivity(i);
 
         }

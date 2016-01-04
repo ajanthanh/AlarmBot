@@ -153,7 +153,6 @@ public class AlarmHelper {
         RealmResults<RealmAlarm> result = realm.where(RealmAlarm.class)
                 .equalTo("key", key)
                 .findAll();
-        realm.close();
         return result.get(0);
     }
 

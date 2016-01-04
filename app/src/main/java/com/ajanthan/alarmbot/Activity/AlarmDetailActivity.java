@@ -2,14 +2,12 @@ package com.ajanthan.alarmbot.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
-import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -43,6 +41,8 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
 
     private static final String PREFS_NAME = "currentAlarmTone";
     private static final String FRAG_TAG_TIME_PICKER = "timePickerDialogFragment";
+    private static final String PREF_ALARM_TONE_URI_KEY = "currentAlarmToneUri";
+    private static final String PREF_ALARM_TOME_NAME_KEY = "currentAlarmToneName";
 
     private Alarm mAlarm;
     private Realm mRealm;
@@ -64,7 +64,6 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     private Switch sSnooze;
     private Switch sSmartAlarm;
     private ArrayList<ToggleButton> bActiveDays;
-    private String formatedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +95,6 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDayThursday));
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDayFriday));
         bActiveDays.add((ToggleButton) findViewById(R.id.activeDaySaturday));
-
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
 
         mRealm = Realm.getDefaultInstance();
         if (getIntent().getStringExtra("cmd").equals("edit")) {
@@ -168,7 +164,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
     @Override
     protected void onStart() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String restoredText = prefs.getString("currentAlarmToneName", "");
+        String restoredText = prefs.getString(PREF_ALARM_TONE_URI_KEY , "");
         if (!restoredText.isEmpty()) {
             tvTone.setText(restoredText);
         }
@@ -212,7 +208,7 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
             public void onClick(View v) {
                 Intent i = new Intent(AlarmDetailActivity.this, AlarmToneActivity.class);
 
-                i.putExtra("alarmToneName", getToneName());
+                i.putExtra(PREF_ALARM_TOME_NAME_KEY, getToneName());
                 startActivity(i);
             }
         });
@@ -312,10 +308,11 @@ public class AlarmDetailActivity extends FragmentActivity implements RadialTimeP
 
     public String getToneUri() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        if (prefs.getString("currentAlarmToneUri", "").isEmpty()) {
+        if (prefs.getString(PREF_ALARM_TONE_URI_KEY, "").isEmpty()) {
             return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM).toString();
         }
-        return prefs.getString("currentAlarmToneUri", "");
+
+        return prefs.getString(PREF_ALARM_TONE_URI_KEY, "");
     }
 
     private Boolean getSnooze() {

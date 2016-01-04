@@ -24,6 +24,10 @@ public class AlarmToneActivity extends Activity {
 
     public static final String PREFS_NAME = "currentAlarmTone";
 
+    private static final String PREF_ALARM_TONE_URI_KEY = "currentAlarmToneUri";
+    private static final String PREF_ALARM_TOME_NAME_KEY = "currentAlarmToneName";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +45,8 @@ public class AlarmToneActivity extends Activity {
         adapterAlarmTone.stopCurrentRingTone();
         AlarmTone alarmTone = adapterAlarmTone.getCurrentAlarmTone();
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-        editor.putString("currentAlarmToneName", alarmTone.getName());
-        editor.putString("currentAlarmToneUri", alarmTone.getUri());
+        editor.putString(PREF_ALARM_TOME_NAME_KEY, alarmTone.getName());
+        editor.putString(PREF_ALARM_TONE_URI_KEY, alarmTone.getUri());
         editor.commit();
         super.onPause();
         finish();
