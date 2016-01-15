@@ -10,12 +10,14 @@
     <color name="primaryTextColorBlueDark">#2980b9</color>
     <color name="primaryTextColorBlueKight">#3498db</color>
     <color name="header_color">#BDBDBD</color>
+    <color name="action_bar_dark">#455A64</color>
+    <color name="appBackground">#212121</color>
 
     <!--Alarm Detail Time Selector-->
 
     <color name="custom_tp_main1">@color/primaryDarkBackground</color>
     <color name="custom_tp_main2">@color/primaryDarkBackground</color>
-    <color name="custom_tp_accent">#2980b9</color>
+    <color name="custom_tp_accent">#FFAB40</color>
     <color name="custom_tp_text">#ecf0f1</color>
     <color name="custom_tp_divider">#808080</color>
 </resources>
